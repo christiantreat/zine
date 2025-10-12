@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,898 +14,894 @@
             padding: 0;
             box-sizing: border-box;
         }
+        
+    body {
+        font-family: 'Courier New', Courier, monospace;
+        background-color: #e8dcc4;
+        color: #2d2d2d;
+    }
 
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #e8dcc4;
-            color: #2d2d2d;
-        }
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+    .header {
+        background-color: #f5ead6;
+        border: 3px solid #5d4e37;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 4px 4px 0px #5d4e37;
+    }
 
-        .header {
-            background-color: #f5ead6;
-            border: 3px solid #5d4e37;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 4px 4px 0px #5d4e37;
-        }
+    h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
 
-        h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 20px;
+        font-style: italic;
+    }
 
-        .subtitle {
-            font-size: 14px;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
+    .btn {
+        background-color: #5d4e37;
+        color: #f5ead6;
+        border: 2px solid #2d2d2d;
+        padding: 12px 24px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 3px 3px 0px #2d2d2d;
+        transition: all 0.1s;
+        margin-right: 10px;
+    }
 
-        .btn {
-            background-color: #5d4e37;
-            color: #f5ead6;
-            border: 2px solid #2d2d2d;
-            padding: 12px 24px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 3px 3px 0px #2d2d2d;
-            transition: all 0.1s;
-            margin-right: 10px;
-        }
+    .btn:hover {
+        transform: translate(1px, 1px);
+        box-shadow: 2px 2px 0px #2d2d2d;
+    }
 
-        .btn:hover {
-            transform: translate(1px, 1px);
-            box-shadow: 2px 2px 0px #2d2d2d;
-        }
+    .btn:active {
+        transform: translate(3px, 3px);
+        box-shadow: 0px 0px 0px #2d2d2d;
+    }
 
-        .btn:active {
-            transform: translate(3px, 3px);
-            box-shadow: 0px 0px 0px #2d2d2d;
-        }
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+    .btn-small {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
 
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 12px;
-        }
+    .btn-danger {
+        background-color: #8b4513;
+    }
 
-        .btn-danger {
-            background-color: #8b4513;
-        }
+    .editor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-top: 30px;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
+    .panel {
+        background-color: #f5ead6;
+        border: 3px solid #5d4e37;
+        padding: 30px;
+        box-shadow: 4px 4px 0px #5d4e37;
+    }
+
+    .panel h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 2px solid #5d4e37;
+        padding-bottom: 10px;
+    }
+
+    .panel h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .page-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .page-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .page-row.single {
+        grid-template-columns: 1fr;
+    }
+
+    .page-btn {
+        background-color: #e8dcc4;
+        border: 2px solid #5d4e37;
+        padding: 20px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.1s;
+    }
+
+    .page-btn:hover {
+        background-color: #d4c4a8;
+    }
+
+    .page-btn.active {
+        background-color: #5d4e37;
+        color: #f5ead6;
+        box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .hint {
+        font-size: 11px;
+        font-style: italic;
+        color: #5d4e37;
+        margin-top: 5px;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 200px;
+        padding: 15px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        background-color: #fffef7;
+        border: 2px solid #5d4e37;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #2d2d2d;
+        box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        background-color: #fffef7;
+        border: 2px solid #5d4e37;
+        cursor: pointer;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: #2d2d2d;
+    }
+
+    .controls-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .image-upload-area {
+        border: 2px dashed #5d4e37;
+        padding: 20px;
+        text-align: center;
+        background-color: #fffef7;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .image-upload-area:hover {
+        background-color: #f5ead6;
+        border-color: #2d2d2d;
+    }
+
+    .image-upload-area.has-image {
+        border-style: solid;
+    }
+
+    .image-thumbnail {
+        max-width: 100%;
+        max-height: 150px;
+        border: 3px solid #5d4e37;
+        box-shadow: 2px 2px 0px #2d2d2d;
+        margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .live-preview-container {
+        border: 3px solid #5d4e37;
+        background-color: white;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        margin-top: 20px;
+    }
+
+    .live-preview {
+        width: 100%;
+        height: 400px;
+        padding: 20px;
+        overflow: auto;
+        background: white;
+        font-family: 'Courier New', Courier, monospace;
+        color: black;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .live-preview.image-top {
+        flex-direction: column;
+    }
+
+    .live-preview.image-bottom {
+        flex-direction: column-reverse;
+    }
+
+    .live-preview.image-center {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .live-preview img {
+        border: 2px solid #2d2d2d;
+        margin: 5px auto;
+        display: block;
+    }
+
+    .live-preview.image-size-small img {
+        max-width: 30%;
+        height: auto;
+    }
+
+    .live-preview.image-size-medium img {
+        max-width: 50%;
+        height: auto;
+    }
+
+    .live-preview.image-size-large img {
+        max-width: 75%;
+        height: auto;
+    }
+
+    .live-preview.image-size-full img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .live-preview h1, .live-preview h2, .live-preview h3 {
+        font-family: 'Courier New', Courier, monospace;
+        margin: 10px 0;
+        color: black;
+    }
+
+    .live-preview p {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: black;
+    }
+
+    .live-preview em {
+        font-style: italic;
+    }
+
+    .live-preview strong {
+        font-weight: bold;
+    }
+
+    .live-preview ul, .live-preview ol {
+        margin: 10px 0;
+        padding-left: 30px;
+    }
+
+    .live-preview li {
+        margin: 5px 0;
+        color: black;
+        line-height: 1.6;
+    }
+
+    .live-preview.text-small { font-size: 8px; }
+    .live-preview.text-medium { font-size: 12px; }
+    .live-preview.text-large { font-size: 16px; }
+    
+    .live-preview.text-small h1 { font-size: 12px; }
+    .live-preview.text-small h2 { font-size: 10px; }
+    .live-preview.text-small h3 { font-size: 9px; }
+    
+    .live-preview.text-medium h1 { font-size: 16px; }
+    .live-preview.text-medium h2 { font-size: 14px; }
+    .live-preview.text-medium h3 { font-size: 13px; }
+    
+    .live-preview.text-large h1 { font-size: 22px; }
+    .live-preview.text-large h2 { font-size: 19px; }
+    .live-preview.text-large h3 { font-size: 17px; }
+
+    .live-preview.text-left { text-align: left; }
+    .live-preview.text-center { text-align: center; }
+    .live-preview.text-right { text-align: right; }
+
+    .preview-label {
+        font-size: 11px;
+        font-style: italic;
+        color: #5d4e37;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    #pdfRenderContainer {
+        position: fixed;
+        left: -9999px;
+        top: 0;
+        background: white;
+        width: 1056px;
+        height: 816px;
+    }
+
+    .pdf-sheet {
+        width: 1056px;
+        height: 816px;
+        background: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pdf-row {
+        display: flex;
+        height: 408px;
+        width: 1056px;
+    }
+
+    .pdf-page {
+        width: 264px;
+        height: 408px;
+        padding: 20px;
+        overflow: hidden;
+        background: white;
+        font-family: 'Courier New', Courier, monospace;
+        color: black;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pdf-page.image-top {
+        flex-direction: column;
+    }
+
+    .pdf-page.image-bottom {
+        flex-direction: column-reverse;
+    }
+
+    .pdf-page.image-center {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .pdf-page img {
+        border: 2px solid #2d2d2d;
+        margin: 5px auto;
+        display: block;
+    }
+
+    .pdf-page.image-size-small img {
+        max-width: 30%;
+        height: auto;
+    }
+
+    .pdf-page.image-size-medium img {
+        max-width: 50%;
+        height: auto;
+    }
+
+    .pdf-page.image-size-large img {
+        max-width: 75%;
+        height: auto;
+    }
+
+    .pdf-page.image-size-full img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .pdf-page.rotated {
+        transform: rotate(180deg);
+    }
+
+    .pdf-page h1, .pdf-page h2, .pdf-page h3 {
+        font-family: 'Courier New', Courier, monospace;
+        margin: 10px 0;
+        color: black;
+    }
+
+    .pdf-page p {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: black;
+    }
+
+    .pdf-page em {
+        font-style: italic;
+    }
+
+    .pdf-page strong {
+        font-weight: bold;
+    }
+
+    .pdf-page ul, .pdf-page ol {
+        margin: 10px 0;
+        padding-left: 30px;
+    }
+
+    .pdf-page li {
+        margin: 5px 0;
+        color: black;
+        line-height: 1.6;
+    }
+
+    .pdf-page.text-small { font-size: 8px; }
+    .pdf-page.text-medium { font-size: 12px; }
+    .pdf-page.text-large { font-size: 16px; }
+    
+    .pdf-page.text-small h1 { font-size: 12px; }
+    .pdf-page.text-small h2 { font-size: 10px; }
+    .pdf-page.text-small h3 { font-size: 9px; }
+    
+    .pdf-page.text-medium h1 { font-size: 16px; }
+    .pdf-page.text-medium h2 { font-size: 14px; }
+    .pdf-page.text-medium h3 { font-size: 13px; }
+    
+    .pdf-page.text-large h1 { font-size: 22px; }
+    .pdf-page.text-large h2 { font-size: 19px; }
+    .pdf-page.text-large h3 { font-size: 17px; }
+
+    .pdf-page.text-left { text-align: left; }
+    .pdf-page.text-center { text-align: center; }
+    .pdf-page.text-right { text-align: right; }
+
+    @media (max-width: 1024px) {
         .editor-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .panel {
-            background-color: #f5ead6;
-            border: 3px solid #5d4e37;
-            padding: 30px;
-            box-shadow: 4px 4px 0px #5d4e37;
-        }
-
-        .panel h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid #5d4e37;
-            padding-bottom: 10px;
-        }
-
-        .panel h3 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .page-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .page-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .page-row.single {
             grid-template-columns: 1fr;
         }
-
-        .page-btn {
-            background-color: #e8dcc4;
-            border: 2px solid #5d4e37;
-            padding: 20px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.1s;
+        .container {
+            padding: 20px 10px;
         }
-
-        .page-btn:hover {
-            background-color: #d4c4a8;
-        }
-
-        .page-btn.active {
-            background-color: #5d4e37;
-            color: #f5ead6;
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-
-        .hint {
-            font-size: 11px;
-            font-style: italic;
-            color: #5d4e37;
-            margin-top: 5px;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 200px;
-            padding: 15px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            background-color: #fffef7;
-            border: 2px solid #5d4e37;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #2d2d2d;
-            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
-        }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            background-color: #fffef7;
-            border: 2px solid #5d4e37;
-            cursor: pointer;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #2d2d2d;
-        }
-
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .image-upload-area {
-            border: 2px dashed #5d4e37;
-            padding: 20px;
-            text-align: center;
-            background-color: #fffef7;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .image-upload-area:hover {
-            background-color: #f5ead6;
-            border-color: #2d2d2d;
-        }
-
-        .image-upload-area.has-image {
-            border-style: solid;
-        }
-
-        .image-thumbnail {
-            max-width: 100%;
-            max-height: 150px;
-            border: 3px solid #5d4e37;
-            box-shadow: 2px 2px 0px #2d2d2d;
-            margin-bottom: 10px;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .preview-note {
-            font-size: 11px;
-            margin-top: 15px;
-            font-style: italic;
-            color: #5d4e37;
-            text-align: center;
-        }
-
-        .preview-sheet-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 500px;
-        }
-
-        .preview-sheet {
-            background-color: white;
-            width: 100%;
-            max-width: 650px;
-            aspect-ratio: 1056 / 816;
-            border: 3px solid #2d2d2d;
-            box-shadow: 8px 8px 0px #5d4e37;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .preview-row {
-            display: flex;
-            height: 50%;
-            width: 100%;
-        }
-
-        .preview-page {
-            width: 25%;
-            height: 100%;
-            border: 1px solid #ccc;
-            padding: 10px;
-            overflow: hidden;
-            background-color: white;
-            word-wrap: break-word;
-            position: relative;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 8px;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.4;
-        }
-
-        .preview-page.image-top {
-            flex-direction: column;
-        }
-
-        .preview-page.image-bottom {
-            flex-direction: column-reverse;
-        }
-
-        .preview-page.image-center {
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .preview-page img {
-            border: 1px solid #2d2d2d;
-            margin: 2px auto;
-            display: block;
-        }
-
-        .preview-page.image-size-small img {
-            max-width: 30%;
-            height: auto;
-        }
-
-        .preview-page.image-size-medium img {
-            max-width: 50%;
-            height: auto;
-        }
-
-        .preview-page.image-size-large img {
-            max-width: 75%;
-            height: auto;
-        }
-
-        .preview-page.image-size-full img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .preview-page::before {
-            content: attr(data-page);
-            position: absolute;
-            top: 3px;
-            right: 3px;
-            font-size: 7px;
-            color: #999;
-            font-weight: bold;
-            z-index: 10;
-        }
-
-        .preview-page.rotated {
-            transform: rotate(180deg);
-        }
-
-        .preview-page.active-editing {
-            box-shadow: inset 0 0 0 2px #5d4e37;
-        }
-
-        .preview-page h1, .preview-page h2, .preview-page h3 {
-            font-family: 'Courier New', Courier, monospace;
-            margin: 4px 0;
-        }
-
-        .preview-page p {
-            margin: 4px 0;
-            line-height: 1.3;
-        }
-
-        .preview-page em {
-            font-style: italic;
-        }
-
-        .preview-page strong {
-            font-weight: bold;
-        }
-
-        .preview-page ul, .preview-page ol {
-            margin: 4px 0;
-            padding-left: 12px;
-        }
-
-        .preview-page li {
-            margin: 2px 0;
-            line-height: 1.2;
-        }
-
-        .preview-page.text-small { font-size: 6px; }
-        .preview-page.text-medium { font-size: 8px; }
-        .preview-page.text-large { font-size: 11px; }
-        
-        .preview-page.text-small h1 { font-size: 9px; }
-        .preview-page.text-small h2 { font-size: 8px; }
-        .preview-page.text-small h3 { font-size: 7px; }
-        
-        .preview-page.text-medium h1 { font-size: 11px; }
-        .preview-page.text-medium h2 { font-size: 10px; }
-        .preview-page.text-medium h3 { font-size: 9px; }
-        
-        .preview-page.text-large h1 { font-size: 15px; }
-        .preview-page.text-large h2 { font-size: 13px; }
-        .preview-page.text-large h3 { font-size: 12px; }
-
-        .preview-page.text-left { text-align: left; }
-        .preview-page.text-center { text-align: center; }
-        .preview-page.text-right { text-align: right; }
-
-        #pdfRenderContainer {
-            position: fixed;
-            left: -9999px;
-            top: 0;
-            background: white;
-            width: 1056px;
-            height: 816px;
-        }
-
-        .pdf-sheet {
-            width: 1056px;
-            height: 816px;
-            background: white;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pdf-row {
-            display: flex;
-            height: 408px;
-            width: 1056px;
-        }
-
-        .pdf-page {
-            width: 264px;
-            height: 408px;
-            padding: 20px;
-            overflow: hidden;
-            background: white;
-            font-family: 'Courier New', Courier, monospace;
-            color: black;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pdf-page.image-top {
-            flex-direction: column;
-        }
-
-        .pdf-page.image-bottom {
-            flex-direction: column-reverse;
-        }
-
-        .pdf-page.image-center {
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .pdf-page img {
-            border: 2px solid #2d2d2d;
-            margin: 5px auto;
-            display: block;
-        }
-
-        .pdf-page.image-size-small img {
-            max-width: 30%;
-            height: auto;
-        }
-
-        .pdf-page.image-size-medium img {
-            max-width: 50%;
-            height: auto;
-        }
-
-        .pdf-page.image-size-large img {
-            max-width: 75%;
-            height: auto;
-        }
-
-        .pdf-page.image-size-full img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .pdf-page.rotated {
-            transform: rotate(180deg);
-        }
-
-        .pdf-page h1, .pdf-page h2, .pdf-page h3 {
-            font-family: 'Courier New', Courier, monospace;
-            margin: 10px 0;
-            color: black;
-        }
-
-        .pdf-page p {
-            margin: 10px 0;
-            line-height: 1.6;
-            color: black;
-        }
-
-        .pdf-page em {
-            font-style: italic;
-        }
-
-        .pdf-page strong {
-            font-weight: bold;
-        }
-
-        .pdf-page ul, .pdf-page ol {
-            margin: 10px 0;
-            padding-left: 30px;
-        }
-
-        .pdf-page li {
-            margin: 5px 0;
-            color: black;
-            line-height: 1.6;
-        }
-
-        .pdf-page.text-small { font-size: 11px; }
-        .pdf-page.text-medium { font-size: 14px; }
-        .pdf-page.text-large { font-size: 20px; }
-        
-        .pdf-page.text-small h1 { font-size: 16px; }
-        .pdf-page.text-small h2 { font-size: 14px; }
-        .pdf-page.text-small h3 { font-size: 12px; }
-        
-        .pdf-page.text-medium h1 { font-size: 20px; }
-        .pdf-page.text-medium h2 { font-size: 18px; }
-        .pdf-page.text-medium h3 { font-size: 16px; }
-        
-        .pdf-page.text-large h1 { font-size: 28px; }
-        .pdf-page.text-large h2 { font-size: 24px; }
-        .pdf-page.text-large h3 { font-size: 22px; }
-
-        .pdf-page.text-left { text-align: left; }
-        .pdf-page.text-center { text-align: center; }
-        .pdf-page.text-right { text-align: right; }
-
-        @media (max-width: 1024px) {
-            .editor-grid {
-                grid-template-columns: 1fr;
-            }
-            .container {
-                padding: 20px 10px;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>⊞ 8-Page Zine Maker ⊞</h1>
             <p class="subtitle">~ Create your mini zine with authentic typewriter charm ~</p>
+            <button class="btn" onclick="saveProject()">💾 Save Project</button>
+            <button class="btn" onclick="document.getElementById('loadProjectFile').click()">📂 Load Project</button>
             <button class="btn" onclick="generatePDF()" id="downloadBtn">⬇ Download PDF</button>
+            <input type="file" id="loadProjectFile" accept=".zine" style="display: none;" onchange="loadProject(event)">
         </div>
+    <div class="editor-grid">
+        <div class="panel">
+            <h2>Select Page to Edit</h2>
+            <div class="page-grid" id="pageSelector"></div>
 
-        <div class="editor-grid">
-            <div class="panel">
-                <h2>Select Page to Edit</h2>
-                <div class="page-grid" id="pageSelector"></div>
+            <h3>Edit Page <span id="currentPageNum">1</span></h3>
 
-                <h3>Edit Page <span id="currentPageNum">1</span></h3>
+            <div class="form-group">
+                <label>Content:</label>
+                <textarea id="pageText" oninput="updateCurrentPage()"></textarea>
+                <p class="hint">Supports markdown: **bold**, *italic*, # headers, - lists, etc.</p>
+            </div>
+
+            <div class="form-group">
+                <label>Image:</label>
+                <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageUpload').click()">
+                    <div id="imagePreview"></div>
+                    <p id="uploadPrompt">Click to upload image</p>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+                <button class="btn btn-small btn-danger" id="removeImageBtn" onclick="removeImage()" style="display: none;">Remove Image</button>
+            </div>
+
+            <div class="controls-grid">
+                <div class="form-group">
+                    <label>Text Size:</label>
+                    <select id="textSize" onchange="updateCurrentPage()">
+                        <option value="small" selected>Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
-                    <label>Content:</label>
-                    <textarea id="pageText" oninput="updateCurrentPage()"></textarea>
-                    <p class="hint">Supports markdown: **bold**, *italic*, # headers, - lists, etc.</p>
+                    <label>Text Align:</label>
+                    <select id="textAlign" onchange="updateCurrentPage()">
+                        <option value="left" selected>Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="controls-grid">
+                <div class="form-group">
+                    <label>Image Position:</label>
+                    <select id="imagePosition" onchange="updateCurrentPage()">
+                        <option value="top" selected>Top</option>
+                        <option value="center">Center</option>
+                        <option value="bottom">Bottom</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label>Image:</label>
-                    <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageUpload').click()">
-                        <div id="imagePreview"></div>
-                        <p id="uploadPrompt">Click to upload image</p>
-                    </div>
-                    <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
-                    <button class="btn btn-small btn-danger" id="removeImageBtn" onclick="removeImage()" style="display: none;">Remove Image</button>
+                    <label>Image Size:</label>
+                    <select id="imageSize" onchange="updateCurrentPage()">
+                        <option value="small">Small (30%)</option>
+                        <option value="medium" selected>Medium (50%)</option>
+                        <option value="large">Large (75%)</option>
+                        <option value="full">Full Width</option>
+                    </select>
                 </div>
-
-                <div class="controls-grid">
-                    <div class="form-group">
-                        <label>Text Size:</label>
-                        <select id="textSize" onchange="updateCurrentPage()">
-                            <option value="small">Small</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="large">Large</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Text Align:</label>
-                        <select id="textAlign" onchange="updateCurrentPage()">
-                            <option value="left" selected>Left</option>
-                            <option value="center">Center</option>
-                            <option value="right">Right</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="controls-grid">
-                    <div class="form-group">
-                        <label>Image Position:</label>
-                        <select id="imagePosition" onchange="updateCurrentPage()">
-                            <option value="top" selected>Top</option>
-                            <option value="center">Center</option>
-                            <option value="bottom">Bottom</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Image Size:</label>
-                        <select id="imageSize" onchange="updateCurrentPage()">
-                            <option value="small">Small (30%)</option>
-                            <option value="medium" selected>Medium (50%)</option>
-                            <option value="large">Large (75%)</option>
-                            <option value="full">Full Width</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <h2>Live Zine Preview</h2>
-                <div class="preview-sheet-container">
-                    <div class="preview-sheet">
-                        <div class="preview-row">
-                            <div class="preview-page rotated" data-page="5"></div>
-                            <div class="preview-page rotated" data-page="4"></div>
-                            <div class="preview-page rotated" data-page="3"></div>
-                            <div class="preview-page rotated" data-page="2"></div>
-                        </div>
-                        <div class="preview-row">
-                            <div class="preview-page" data-page="6"></div>
-                            <div class="preview-page" data-page="7"></div>
-                            <div class="preview-page" data-page="8"></div>
-                            <div class="preview-page" data-page="1"></div>
-                        </div>
-                    </div>
-                </div>
-                <p class="preview-note">↑ Real-time preview of your complete zine (Pages 5-4-3-2 upside-down / 6-7-8-1 right-side-up)</p>
             </div>
         </div>
-    </div>
 
-    <div id="pdfRenderContainer">
-        <div class="pdf-sheet" id="pdfSheet">
-            <div class="pdf-row">
-                <div class="pdf-page rotated" data-page="5"></div>
-                <div class="pdf-page rotated" data-page="4"></div>
-                <div class="pdf-page rotated" data-page="3"></div>
-                <div class="pdf-page rotated" data-page="2"></div>
+        <div class="panel">
+            <h2>Live Preview (Exact PDF Output)</h2>
+            <div class="live-preview-container">
+                <div id="livePreview" class="live-preview"></div>
             </div>
-            <div class="pdf-row">
-                <div class="pdf-page" data-page="6"></div>
-                <div class="pdf-page" data-page="7"></div>
-                <div class="pdf-page" data-page="8"></div>
-                <div class="pdf-page" data-page="1"></div>
-            </div>
+            <p class="preview-label">↑ This shows exactly how page <span id="previewPageNum">1</span> will look in the PDF</p>
         </div>
     </div>
+</div>
 
-    <script>
-        const jsPDF = window.jspdf.jsPDF;
+<div id="pdfRenderContainer">
+    <div class="pdf-sheet" id="pdfSheet">
+        <div class="pdf-row">
+            <div class="pdf-page rotated" data-page="5"></div>
+            <div class="pdf-page rotated" data-page="4"></div>
+            <div class="pdf-page rotated" data-page="3"></div>
+            <div class="pdf-page rotated" data-page="2"></div>
+        </div>
+        <div class="pdf-row">
+            <div class="pdf-page" data-page="6"></div>
+            <div class="pdf-page" data-page="7"></div>
+            <div class="pdf-page" data-page="8"></div>
+            <div class="pdf-page" data-page="1"></div>
+        </div>
+    </div>
+</div>
 
-        const pages = {
-            1: { text: '# MY ZINE TITLE\n\nBy Your Name', align: 'center', size: 'large', image: null, imagePosition: 'top', imageSize: 'medium' },
-            2: { text: 'Page 2 content goes here...\n\nYou can use **bold** and *italic* text!', align: 'left', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' },
-            3: { text: 'Page 3 content goes here...', align: 'left', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' },
-            4: { text: 'Page 4 content goes here...', align: 'left', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' },
-            5: { text: 'Page 5 content goes here...', align: 'left', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' },
-            6: { text: 'Page 6 content goes here...', align: 'left', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' },
-            7: { text: 'Page 7 content goes here...', align: 'left', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' },
-            8: { text: '## THE END', align: 'center', size: 'medium', image: null, imagePosition: 'top', imageSize: 'medium' }
+<script>
+    const jsPDF = window.jspdf.jsPDF;
+
+    const pages = {
+        1: { text: '# MY ZINE TITLE\n\nBy Your Name', align: 'center', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        2: { text: 'Page 2 content goes here...\n\nYou can use **bold** and *italic* text!', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        3: { text: 'Page 3 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        4: { text: 'Page 4 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        5: { text: 'Page 5 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        6: { text: 'Page 6 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        7: { text: 'Page 7 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
+        8: { text: '## THE END', align: 'center', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' }
+    };
+
+    let currentPage = 1;
+
+    function initPageSelector() {
+        const selector = document.getElementById('pageSelector');
+        
+        const coverRow = document.createElement('div');
+        coverRow.className = 'page-row single';
+        const coverBtn = document.createElement('button');
+        coverBtn.className = 'page-btn active';
+        coverBtn.textContent = 'Cover (Page 1)';
+        coverBtn.onclick = () => selectPage(1);
+        coverRow.appendChild(coverBtn);
+        selector.appendChild(coverRow);
+        
+        const row23 = document.createElement('div');
+        row23.className = 'page-row';
+        for (let i = 2; i <= 3; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn';
+            btn.textContent = 'Page ' + i;
+            btn.onclick = () => selectPage(i);
+            row23.appendChild(btn);
+        }
+        selector.appendChild(row23);
+        
+        const row45 = document.createElement('div');
+        row45.className = 'page-row';
+        for (let i = 4; i <= 5; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn';
+            btn.textContent = 'Page ' + i;
+            btn.onclick = () => selectPage(i);
+            row45.appendChild(btn);
+        }
+        selector.appendChild(row45);
+        
+        const row67 = document.createElement('div');
+        row67.className = 'page-row';
+        for (let i = 6; i <= 7; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn';
+            btn.textContent = 'Page ' + i;
+            btn.onclick = () => selectPage(i);
+            row67.appendChild(btn);
+        }
+        selector.appendChild(row67);
+        
+        const backRow = document.createElement('div');
+        backRow.className = 'page-row single';
+        const backBtn = document.createElement('button');
+        backBtn.className = 'page-btn';
+        backBtn.textContent = 'Back (Page 8)';
+        backBtn.onclick = () => selectPage(8);
+        backRow.appendChild(backBtn);
+        selector.appendChild(backRow);
+    }
+
+    function selectPage(pageNum) {
+        currentPage = pageNum;
+        
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        const buttons = document.querySelectorAll('.page-btn');
+        const pageOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+        const buttonIndex = pageOrder.indexOf(pageNum);
+        if (buttonIndex !== -1 && buttons[buttonIndex]) {
+            buttons[buttonIndex].classList.add('active');
+        }
+
+        const page = pages[pageNum];
+        document.getElementById('pageText').value = page.text;
+        document.getElementById('textSize').value = page.size;
+        document.getElementById('textAlign').value = page.align;
+        document.getElementById('imagePosition').value = page.imagePosition;
+        document.getElementById('imageSize').value = page.imageSize;
+        document.getElementById('currentPageNum').textContent = pageNum;
+        document.getElementById('previewPageNum').textContent = pageNum;
+
+        updateImagePreview();
+        updateLivePreview();
+    }
+
+    function updateImagePreview() {
+        const page = pages[currentPage];
+        const imagePreview = document.getElementById('imagePreview');
+        const uploadPrompt = document.getElementById('uploadPrompt');
+        const removeBtn = document.getElementById('removeImageBtn');
+        const uploadArea = document.getElementById('imageUploadArea');
+
+        if (page.image) {
+            imagePreview.innerHTML = '<img src="' + page.image + '" class="image-thumbnail" alt="Preview">';
+            uploadPrompt.style.display = 'none';
+            removeBtn.style.display = 'inline-block';
+            uploadArea.classList.add('has-image');
+        } else {
+            imagePreview.innerHTML = '';
+            uploadPrompt.style.display = 'block';
+            uploadPrompt.textContent = 'Click to upload image';
+            removeBtn.style.display = 'none';
+            uploadArea.classList.remove('has-image');
+        }
+    }
+
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                pages[currentPage].image = e.target.result;
+                updateImagePreview();
+                updateLivePreview();
+                updateCurrentPage();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removeImage() {
+        pages[currentPage].image = null;
+        document.getElementById('imageUpload').value = '';
+        updateImagePreview();
+        updateLivePreview();
+        updateCurrentPage();
+    }
+
+    function updateCurrentPage() {
+        pages[currentPage].text = document.getElementById('pageText').value;
+        pages[currentPage].size = document.getElementById('textSize').value;
+        pages[currentPage].align = document.getElementById('textAlign').value;
+        pages[currentPage].imagePosition = document.getElementById('imagePosition').value;
+        pages[currentPage].imageSize = document.getElementById('imageSize').value;
+        updateLivePreview();
+        updatePDFPages();
+    }
+
+    function updateLivePreview() {
+        const preview = document.getElementById('livePreview');
+        const page = pages[currentPage];
+        preview.className = 'live-preview text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
+        preview.innerHTML = renderPageContent(page);
+    }
+
+    function renderPageContent(page) {
+        let html = '';
+        
+        if (page.image) {
+            const imgTag = '<img src="' + page.image + '" alt="Page image">';
+            const textContent = '<div>' + marked.parse(page.text) + '</div>';
+            
+            if (page.imagePosition === 'top') {
+                html = imgTag + textContent;
+            } else if (page.imagePosition === 'bottom') {
+                html = textContent + imgTag;
+            } else {
+                html = imgTag + textContent;
+            }
+        } else {
+            html = marked.parse(page.text);
+        }
+        
+        return html;
+    }
+
+    function updatePDFPages() {
+        // Update hidden PDF render
+        document.querySelectorAll('.pdf-page').forEach(elem => {
+            const pageNum = parseInt(elem.getAttribute('data-page'));
+            const page = pages[pageNum];
+            elem.className = 'pdf-page text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
+            
+            if (pageNum === 5 || pageNum === 4 || pageNum === 3 || pageNum === 2) {
+                elem.classList.add('rotated');
+            }
+            
+            elem.innerHTML = renderPageContent(page);
+        });
+    }
+
+    async function generatePDF() {
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.disabled = true;
+        downloadBtn.textContent = 'Generating...';
+
+        try {
+            updatePDFPages();
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            const element = document.getElementById('pdfSheet');
+            
+            const canvas = await html2canvas(element, {
+                scale: 4,
+                backgroundColor: '#ffffff',
+                logging: false,
+                width: 1056,
+                height: 816,
+                useCORS: true,
+                allowTaint: true
+            });
+
+            const pdf = new jsPDF({
+                orientation: 'landscape',
+                unit: 'px',
+                format: [1056, 816]
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, 1056, 816);
+
+            pdf.save('my-zine.pdf');
+
+            downloadBtn.textContent = '⬇ Download PDF';
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Error generating PDF. Please try again.');
+            downloadBtn.textContent = '⬇ Download PDF';
+        } finally {
+            downloadBtn.disabled = false;
+        }
+    }
+
+    function saveProject() {
+        const projectData = {
+            version: '1.0',
+            pages: pages,
+            savedDate: new Date().toISOString()
         };
 
-        let currentPage = 1;
+        const dataStr = JSON.stringify(projectData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = 'my-zine-project.zine';
+        link.click();
+        
+        URL.revokeObjectURL(link.href);
+    }
 
-        function initPageSelector() {
-            const selector = document.getElementById('pageSelector');
-            
-            const coverRow = document.createElement('div');
-            coverRow.className = 'page-row single';
-            const coverBtn = document.createElement('button');
-            coverBtn.className = 'page-btn active';
-            coverBtn.textContent = 'Cover (Page 1)';
-            coverBtn.onclick = () => selectPage(1);
-            coverRow.appendChild(coverBtn);
-            selector.appendChild(coverRow);
-            
-            const row23 = document.createElement('div');
-            row23.className = 'page-row';
-            for (let i = 2; i <= 3; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'page-btn';
-                btn.textContent = 'Page ' + i;
-                btn.onclick = () => selectPage(i);
-                row23.appendChild(btn);
-            }
-            selector.appendChild(row23);
-            
-            const row45 = document.createElement('div');
-            row45.className = 'page-row';
-            for (let i = 4; i <= 5; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'page-btn';
-                btn.textContent = 'Page ' + i;
-                btn.onclick = () => selectPage(i);
-                row45.appendChild(btn);
-            }
-            selector.appendChild(row45);
-            
-            const row67 = document.createElement('div');
-            row67.className = 'page-row';
-            for (let i = 6; i <= 7; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'page-btn';
-                btn.textContent = 'Page ' + i;
-                btn.onclick = () => selectPage(i);
-                row67.appendChild(btn);
-            }
-            selector.appendChild(row67);
-            
-            const backRow = document.createElement('div');
-            backRow.className = 'page-row single';
-            const backBtn = document.createElement('button');
-            backBtn.className = 'page-btn';
-            backBtn.textContent = 'Back (Page 8)';
-            backBtn.onclick = () => selectPage(8);
-            backRow.appendChild(backBtn);
-            selector.appendChild(backRow);
-        }
+    function loadProject(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-        function selectPage(pageNum) {
-            currentPage = pageNum;
-            
-            document.querySelectorAll('.page-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const buttons = document.querySelectorAll('.page-btn');
-            const pageOrder = [1, 2, 3, 4, 5, 6, 7, 8];
-            const buttonIndex = pageOrder.indexOf(pageNum);
-            if (buttonIndex !== -1 && buttons[buttonIndex]) {
-                buttons[buttonIndex].classList.add('active');
-            }
-
-            // Highlight the active page in preview
-            document.querySelectorAll('.preview-page').forEach(elem => {
-                elem.classList.remove('active-editing');
-            });
-            const activePreview = document.querySelector(`.preview-page[data-page="${pageNum}"]`);
-            if (activePreview) {
-                activePreview.classList.add('active-editing');
-            }
-
-            const page = pages[pageNum];
-            document.getElementById('pageText').value = page.text;
-            document.getElementById('textSize').value = page.size;
-            document.getElementById('textAlign').value = page.align;
-            document.getElementById('imagePosition').value = page.imagePosition;
-            document.getElementById('imageSize').value = page.imageSize;
-            document.getElementById('currentPageNum').textContent = pageNum;
-
-            updateImagePreview();
-        }
-
-        function updateImagePreview() {
-            const page = pages[currentPage];
-            const imagePreview = document.getElementById('imagePreview');
-            const uploadPrompt = document.getElementById('uploadPrompt');
-            const removeBtn = document.getElementById('removeImageBtn');
-            const uploadArea = document.getElementById('imageUploadArea');
-
-            if (page.image) {
-                imagePreview.innerHTML = '<img src="' + page.image + '" class="image-thumbnail" alt="Preview">';
-                uploadPrompt.style.display = 'none';
-                removeBtn.style.display = 'inline-block';
-                uploadArea.classList.add('has-image');
-            } else {
-                imagePreview.innerHTML = '';
-                uploadPrompt.style.display = 'block';
-                uploadPrompt.textContent = 'Click to upload image';
-                removeBtn.style.display = 'none';
-                uploadArea.classList.remove('has-image');
-            }
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pages[currentPage].image = e.target.result;
-                    updateImagePreview();
-                    updateCurrentPage();
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeImage() {
-            pages[currentPage].image = null;
-            document.getElementById('imageUpload').value = '';
-            updateImagePreview();
-            updateCurrentPage();
-        }
-
-        function updateCurrentPage() {
-            pages[currentPage].text = document.getElementById('pageText').value;
-            pages[currentPage].size = document.getElementById('textSize').value;
-            pages[currentPage].align = document.getElementById('textAlign').value;
-            pages[currentPage].imagePosition = document.getElementById('imagePosition').value;
-            pages[currentPage].imageSize = document.getElementById('imageSize').value;
-            updateAllPreviews();
-        }
-
-        function renderPageContent(page) {
-            let html = '';
-            
-            if (page.image) {
-                const imgTag = '<img src="' + page.image + '" alt="Page image">';
-                const textContent = '<div>' + marked.parse(page.text) + '</div>';
-                
-                if (page.imagePosition === 'top') {
-                    html = imgTag + textContent;
-                } else if (page.imagePosition === 'bottom') {
-                    html = textContent + imgTag;
-                } else {
-                    html = imgTag + textContent;
-                }
-            } else {
-                html = marked.parse(page.text);
-            }
-            
-            return html;
-        }
-
-        function updateAllPreviews() {
-            // Update live preview
-            document.querySelectorAll('.preview-page').forEach(elem => {
-                const pageNum = parseInt(elem.getAttribute('data-page'));
-                const page = pages[pageNum];
-                elem.className = 'preview-page text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
-                
-                if (pageNum === 5 || pageNum === 4 || pageNum === 3 || pageNum === 2) {
-                    elem.classList.add('rotated');
-                }
-                
-                if (pageNum === currentPage) {
-                    elem.classList.add('active-editing');
-                }
-                
-                elem.innerHTML = renderPageContent(page);
-            });
-
-            // Update hidden PDF render
-            document.querySelectorAll('.pdf-page').forEach(elem => {
-                const pageNum = parseInt(elem.getAttribute('data-page'));
-                const page = pages[pageNum];
-                elem.className = 'pdf-page text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
-                
-                if (pageNum === 5 || pageNum === 4 || pageNum === 3 || pageNum === 2) {
-                    elem.classList.add('rotated');
-                }
-                
-                elem.innerHTML = renderPageContent(page);
-            });
-        }
-
-        async function generatePDF() {
-            const downloadBtn = document.getElementById('downloadBtn');
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = 'Generating...';
-
+        const reader = new FileReader();
+        reader.onload = function(e) {
             try {
-                updateAllPreviews();
-                await new Promise(resolve => setTimeout(resolve, 300));
-
-                const element = document.getElementById('pdfSheet');
+                const projectData = JSON.parse(e.target.result);
                 
-                const canvas = await html2canvas(element, {
-                    scale: 1,
-                    backgroundColor: '#ffffff',
-                    logging: false,
-                    width: 1056,
-                    height: 816,
-                    useCORS: true,
-                    allowTaint: true
+                if (!projectData.pages) {
+                    alert('Invalid project file format.');
+                    return;
+                }
+
+                // Load all pages
+                Object.keys(projectData.pages).forEach(pageNum => {
+                    pages[pageNum] = projectData.pages[pageNum];
                 });
 
-                const pdf = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'px',
-                    format: [1056, 816]
-                });
-
-                const imgData = canvas.toDataURL('image/png');
+                // Refresh the current page view
+                selectPage(currentPage);
+                updateLivePreview();
+                updatePDFPages();
                 
-                pdf.addImage(imgData, 'PNG', 0, 0, 1056, 816);
-
-                pdf.save('my-zine.pdf');
-
-                downloadBtn.textContent = '⬇ Download PDF';
+                alert('Project loaded successfully!');
             } catch (error) {
-                console.error('Error generating PDF:', error);
-                alert('Error generating PDF. Please try again.');
-                downloadBtn.textContent = '⬇ Download PDF';
-            } finally {
-                downloadBtn.disabled = false;
+                console.error('Error loading project:', error);
+                alert('Error loading project file. Please make sure it\'s a valid .zine file.');
             }
-        }
+        };
+        reader.readAsText(file);
+        
+        // Reset file input so the same file can be loaded again
+        event.target.value = '';
+    }
 
-        initPageSelector();
-        selectPage(1);
-        updateAllPreviews();
-    </script>
+    initPageSelector();
+    selectPage(1);
+    updateLivePreview();
+    updatePDFPages();
+</script>
 </body>
 </html>
