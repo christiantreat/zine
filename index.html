@@ -197,6 +197,15 @@
         box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
     }
 
+    #pageCSS {
+        min-height: 120px;
+        font-family: 'Monaco', 'Courier New', monospace;
+        font-size: 12px;
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        border: 2px solid #5d4e37;
+    }
+
     select {
         width: 100%;
         padding: 10px;
@@ -495,6 +504,19 @@
     .pdf-page.text-center { text-align: center; }
     .pdf-page.text-right { text-align: right; }
 
+    /* Print-specific styles for better control */
+    @media print {
+        body { 
+            margin: 0; 
+            padding: 0; 
+        }
+        .pdf-page { 
+            page-break-after: always;
+            width: 11in; 
+            height: 8.5in;
+        }
+    }
+
     @media (max-width: 1024px) {
         .editor-grid {
             grid-template-columns: 1fr;
@@ -526,6 +548,25 @@
                 <label>Content:</label>
                 <textarea id="pageText" oninput="updateCurrentPage()"></textarea>
                 <p class="hint">Supports markdown: **bold**, *italic*, # headers, - lists, etc.</p>
+            </div>
+
+            <div class="form-group">
+                <label>Custom CSS for This Page:</label>
+                <textarea id="pageCSS" oninput="updateCurrentPage()" placeholder=".live-preview { 
+  background: linear-gradient(#fff, #f0f0f0);
+  font-family: Georgia, serif;
+}
+
+.live-preview h1 {
+  color: #ff6b6b;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.live-preview p {
+  font-size: 14px;
+  line-height: 2;
+}"></textarea>
+                <p class="hint">Write CSS targeting .live-preview or any element inside it. Changes apply to both preview and PDF.</p>
             </div>
 
             <div class="form-group">
@@ -581,11 +622,10 @@
         </div>
 
         <div class="panel">
-            <h2>Live Preview (Exact PDF Output)</h2>
+            <h2>Live Preview</h2>
             <div class="live-preview-container">
                 <div id="livePreview" class="live-preview"></div>
             </div>
-            <p class="preview-label">↑ This shows exactly how page <span id="previewPageNum">1</span> will look in the PDF</p>
         </div>
     </div>
 </div>
@@ -611,14 +651,14 @@
     const jsPDF = window.jspdf.jsPDF;
 
     const pages = {
-        1: { text: '# MY ZINE TITLE\n\nBy Your Name', align: 'center', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        2: { text: 'Page 2 content goes here...\n\nYou can use **bold** and *italic* text!', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        3: { text: 'Page 3 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        4: { text: 'Page 4 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        5: { text: 'Page 5 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        6: { text: 'Page 6 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        7: { text: 'Page 7 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' },
-        8: { text: '## THE END', align: 'center', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium' }
+        1: { text: '# MY ZINE TITLE\n\nBy Your Name', align: 'center', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        2: { text: 'Page 2 content goes here...\n\nYou can use **bold** and *italic* text!', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        3: { text: 'Page 3 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        4: { text: 'Page 4 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        5: { text: 'Page 5 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        6: { text: 'Page 6 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        7: { text: 'Page 7 content goes here...', align: 'left', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' },
+        8: { text: '## THE END', align: 'center', size: 'small', image: null, imagePosition: 'top', imageSize: 'medium', customCSS: '' }
     };
 
     let currentPage = 1;
@@ -694,6 +734,7 @@
 
         const page = pages[pageNum];
         document.getElementById('pageText').value = page.text;
+        document.getElementById('pageCSS').value = page.customCSS || '';
         document.getElementById('textSize').value = page.size;
         document.getElementById('textAlign').value = page.align;
         document.getElementById('imagePosition').value = page.imagePosition;
@@ -750,6 +791,7 @@
 
     function updateCurrentPage() {
         pages[currentPage].text = document.getElementById('pageText').value;
+        pages[currentPage].customCSS = document.getElementById('pageCSS').value;
         pages[currentPage].size = document.getElementById('textSize').value;
         pages[currentPage].align = document.getElementById('textAlign').value;
         pages[currentPage].imagePosition = document.getElementById('imagePosition').value;
@@ -761,6 +803,21 @@
     function updateLivePreview() {
         const preview = document.getElementById('livePreview');
         const page = pages[currentPage];
+        
+        // Remove old custom style tag
+        const oldStyle = document.getElementById('page-custom-style');
+        if (oldStyle) {
+            oldStyle.remove();
+        }
+        
+        // Add new custom CSS if present
+        if (page.customCSS && page.customCSS.trim() !== '') {
+            const style = document.createElement('style');
+            style.id = 'page-custom-style';
+            style.textContent = page.customCSS;
+            document.head.appendChild(style);
+        }
+        
         preview.className = 'live-preview text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
         preview.innerHTML = renderPageContent(page);
     }
@@ -787,17 +844,30 @@
     }
 
     function updatePDFPages() {
+        // Clear any existing custom style tags in PDF pages
+        document.querySelectorAll('.pdf-page style').forEach(style => style.remove());
+        
         // Update hidden PDF render
         document.querySelectorAll('.pdf-page').forEach(elem => {
             const pageNum = parseInt(elem.getAttribute('data-page'));
             const page = pages[pageNum];
+            
+            // Apply custom CSS via style tag inside the page
+            if (page.customCSS && page.customCSS.trim() !== '') {
+                const style = document.createElement('style');
+                // Replace .live-preview with .pdf-page[data-page="X"] to target this specific page
+                const scopedCSS = page.customCSS.replace(/\.live-preview/g, '.pdf-page[data-page="' + pageNum + '"]');
+                style.textContent = scopedCSS;
+                elem.appendChild(style);
+            }
+            
             elem.className = 'pdf-page text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
             
             if (pageNum === 5 || pageNum === 4 || pageNum === 3 || pageNum === 2) {
                 elem.classList.add('rotated');
             }
             
-            elem.innerHTML = renderPageContent(page);
+            elem.innerHTML = renderPageContent(page) + (elem.querySelector('style') ? elem.querySelector('style').outerHTML : '');
         });
     }
 
@@ -879,6 +949,10 @@
                 // Load all pages
                 Object.keys(projectData.pages).forEach(pageNum => {
                     pages[pageNum] = projectData.pages[pageNum];
+                    // Ensure customCSS exists for backwards compatibility
+                    if (!pages[pageNum].customCSS) {
+                        pages[pageNum].customCSS = '';
+                    }
                 });
 
                 // Refresh the current page view
