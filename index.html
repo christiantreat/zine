@@ -375,6 +375,40 @@
         text-align: center;
     }
 
+    /* Overflow warning styles */
+    .live-preview-container.overflowing {
+        border: 5px solid #ff0000 !important;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5) !important;
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+        50% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); }
+    }
+
+    .overflow-warning {
+        background: #ff0000;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 10px;
+        border-radius: 5px;
+        display: none;
+        animation: blink 1s infinite;
+    }
+
+    .overflow-warning.visible {
+        display: block;
+    }
+
+    @keyframes blink {
+        0%, 50%, 100% { opacity: 1; }
+        25%, 75% { opacity: 0.7; }
+    }
+
     #pdfRenderContainer {
         position: fixed;
         left: -9999px;
@@ -545,7 +579,7 @@
             <h3>Edit Page <span id="currentPageNum">1</span></h3>
 
             <div class="form-group">
-                <label>Content:</label>
+                <label>Content: <span id="charCount" style="color: #888; float: right; font-size: 10px; text-transform: none; letter-spacing: 0;">0 characters</span></label>
                 <textarea id="pageText" oninput="updateCurrentPage()"></textarea>
                 <p class="hint">Supports markdown: **bold**, *italic*, # headers, - lists, etc.</p>
             </div>
@@ -622,10 +656,14 @@
         </div>
 
         <div class="panel">
-            <h2>Live Preview</h2>
-            <div class="live-preview-container">
+            <h2>Live Preview (Exact PDF Output)</h2>
+            <div class="live-preview-container" id="previewContainer">
                 <div id="livePreview" class="live-preview"></div>
             </div>
+            <div class="overflow-warning" id="overflowWarning">
+                ⚠️ WARNING: Content is too long and will be cut off in the PDF! ⚠️
+            </div>
+            <p class="preview-label">↑ This shows exactly how page <span id="previewPageNum">1</span> will look in the PDF</p>
         </div>
     </div>
 </div>
@@ -742,6 +780,28 @@
         document.getElementById('currentPageNum').textContent = pageNum;
         document.getElementById('previewPageNum').textContent = pageNum;
 
+        // Update character count for the new page
+        const charCount = page.text.length;
+        const charCountElement = document.getElementById('charCount');
+        charCountElement.textContent = charCount + ' characters';
+        
+        // Color code based on size setting
+        const size = page.size;
+        let maxChars = 1000;
+        if (size === 'medium') maxChars = 700;
+        if (size === 'large') maxChars = 400;
+        
+        if (charCount > maxChars) {
+            charCountElement.style.color = '#ff0000';
+            charCountElement.style.fontWeight = 'bold';
+        } else if (charCount > maxChars * 0.8) {
+            charCountElement.style.color = '#ff8800';
+            charCountElement.style.fontWeight = 'bold';
+        } else {
+            charCountElement.style.color = '#888';
+            charCountElement.style.fontWeight = 'normal';
+        }
+
         updateImagePreview();
         updateLivePreview();
     }
@@ -796,6 +856,29 @@
         pages[currentPage].align = document.getElementById('textAlign').value;
         pages[currentPage].imagePosition = document.getElementById('imagePosition').value;
         pages[currentPage].imageSize = document.getElementById('imageSize').value;
+        
+        // Update character count
+        const charCount = pages[currentPage].text.length;
+        const charCountElement = document.getElementById('charCount');
+        charCountElement.textContent = charCount + ' characters';
+        
+        // Color code based on size setting
+        const size = pages[currentPage].size;
+        let maxChars = 1000; // default for small
+        if (size === 'medium') maxChars = 700;
+        if (size === 'large') maxChars = 400;
+        
+        if (charCount > maxChars) {
+            charCountElement.style.color = '#ff0000';
+            charCountElement.style.fontWeight = 'bold';
+        } else if (charCount > maxChars * 0.8) {
+            charCountElement.style.color = '#ff8800';
+            charCountElement.style.fontWeight = 'bold';
+        } else {
+            charCountElement.style.color = '#888';
+            charCountElement.style.fontWeight = 'normal';
+        }
+        
         updateLivePreview();
         updatePDFPages();
     }
@@ -820,6 +903,26 @@
         
         preview.className = 'live-preview text-' + page.size + ' text-' + page.align + ' image-' + page.imagePosition + ' image-size-' + page.imageSize;
         preview.innerHTML = renderPageContent(page);
+        
+        // Check for overflow after content is rendered
+        setTimeout(checkOverflow, 100);
+    }
+
+    function checkOverflow() {
+        const preview = document.getElementById('livePreview');
+        const container = document.getElementById('previewContainer');
+        const warning = document.getElementById('overflowWarning');
+        
+        // Check if content is overflowing
+        const isOverflowing = preview.scrollHeight > preview.clientHeight;
+        
+        if (isOverflowing) {
+            container.classList.add('overflowing');
+            warning.classList.add('visible');
+        } else {
+            container.classList.remove('overflowing');
+            warning.classList.remove('visible');
+        }
     }
 
     function renderPageContent(page) {
