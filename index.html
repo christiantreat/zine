@@ -6,13 +6,16 @@
     <title>8-Page Zine Maker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Courier New', Courier, monospace;
             background-color: #e8dcc4;
@@ -87,6 +90,20 @@
             background-color: #8b4513;
         }
 
+        .header-options {
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .header-options label {
+            display: inline;
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: normal;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
         .editor-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -102,6 +119,7 @@
             border: 3px solid #5d4e37;
             padding: 30px;
             box-shadow: 4px 4px 0px #5d4e37;
+            min-width: 0;
         }
 
         .panel h2 {
@@ -146,6 +164,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.1s;
+            color: #2d2d2d;
         }
 
         .page-btn:hover {
@@ -156,6 +175,20 @@
             background-color: #5d4e37;
             color: #f5ead6;
             box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .page-btn.special {
+            border-style: dashed;
+            padding: 12px;
+        }
+
+        .page-btn.warn::after {
+            content: ' ⚠';
+            color: #ff0000;
+        }
+
+        .page-btn.flowing::before {
+            content: '↪ ';
         }
 
         .form-group {
@@ -176,6 +209,20 @@
             font-style: italic;
             color: #5d4e37;
             margin-top: 5px;
+        }
+
+        .target-hint {
+            font-size: 12px;
+            background: #fffef7;
+            border: 2px dashed #5d4e37;
+            padding: 10px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .target-hint code {
+            background: #e8dcc4;
+            padding: 0 3px;
         }
 
         textarea {
@@ -216,6 +263,110 @@
             border-color: #2d2d2d;
         }
 
+        /* ---- Page options (GeoPublish "Page Layout" settings) ---- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px;
+            margin-bottom: 20px;
+            align-items: end;
+        }
+
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .check input {
+            width: 16px;
+            height: 16px;
+            accent-color: #5d4e37;
+        }
+
+        .options-grid select,
+        .image-opts select {
+            padding: 6px;
+            font-size: 12px;
+        }
+
+        .image-opts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        /* ---- Tool box ---- */
+        .toolbox {
+            border: 2px solid #5d4e37;
+            background: #fffef7;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .toolbox-title {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .tool-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .tool-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tool {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 8px;
+            border: 2px solid #5d4e37;
+            background: #e8dcc4;
+            color: #2d2d2d;
+            cursor: pointer;
+        }
+
+        .tool:hover {
+            background: #d4c4a8;
+        }
+
+        .tool:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .tool-select {
+            width: auto;
+            padding: 4px;
+            font-size: 11px;
+        }
+
+        .swatch {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #5d4e37;
+            background-color: #fff;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .swatch.selected {
+            outline: 3px solid #2d2d2d;
+            outline-offset: 1px;
+        }
+
         .image-upload-area {
             border: 2px dashed #5d4e37;
             padding: 20px;
@@ -247,27 +398,110 @@
             display: none;
         }
 
-        .live-preview-container {
-            border: 3px solid #5d4e37;
-            background-color: white;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-            margin-top: 20px;
+        /* ---- Preview ---- */
+        .view-tabs {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
         }
 
-        .live-preview {
-            width: 100%;
-            height: 400px;
-            padding: 20px;
-            overflow: auto;
-            background: white;
+        .view-tab {
             font-family: 'Courier New', Courier, monospace;
-            color: black;
             font-size: 12px;
+            font-weight: bold;
+            padding: 8px 12px;
+            border: 2px solid #5d4e37;
+            background: #e8dcc4;
+            color: #2d2d2d;
+            cursor: pointer;
         }
 
-        .live-preview img {
-            max-width: 100%;
-            height: auto;
+        .view-tab.active {
+            background: #5d4e37;
+            color: #f5ead6;
+        }
+
+        .view-tabs .check {
+            margin-left: auto;
+            font-size: 11px;
+        }
+
+        .preview-stage {
+            display: flex;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .page-frame {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #5d4e37;
+            box-shadow: 3px 3px 0 #5d4e37;
+            background: #fff;
+            flex: none;
+            box-sizing: content-box;
+        }
+
+        .page-frame > .zpage,
+        .sheet-frame > .pdf-sheet {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+        }
+
+        /* Overflow warning styles */
+        .page-frame.overflowing {
+            border: 3px solid #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); }
+        }
+
+        .thumb-grid {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            gap: 14px 12px;
+            justify-content: center;
+        }
+
+        .thumb {
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .thumb .page-frame {
+            margin-bottom: 4px;
+        }
+
+        .thumb.current .page-frame {
+            outline: 3px solid #2d2d2d;
+            outline-offset: 2px;
+        }
+
+        .thumb .page-frame.overflowing {
+            animation: none;
+        }
+
+        .sheet-frame {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #5d4e37;
+            box-shadow: 3px 3px 0 #5d4e37;
+            background: #fff;
+            box-sizing: content-box;
+        }
+
+        .sheet-frame .zpage {
+            cursor: pointer;
         }
 
         .preview-label {
@@ -278,42 +512,56 @@
             text-align: center;
         }
 
-        /* Overflow warning styles */
-        .live-preview-container.overflowing {
-            border: 5px solid #ff0000 !important;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5) !important;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); }
-        }
-
         .overflow-warning {
             background: #ff0000;
             color: white;
             padding: 10px;
-            text-align: center;
             font-weight: bold;
-            font-size: 14px;
-            margin-top: 10px;
+            font-size: 13px;
+            margin-top: 15px;
             border-radius: 5px;
             display: none;
-            animation: blink 1s infinite;
         }
 
         .overflow-warning.visible {
             display: block;
         }
 
-        @keyframes blink {
-            0%, 50%, 100% { opacity: 1; }
-            25%, 75% { opacity: 0.7; }
+        .overflow-warning ul {
+            margin-left: 18px;
         }
 
+        .overflow-warning li {
+            margin: 3px 0;
+        }
 
+        .flow-info {
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+        }
 
+        /* Layout guides (preview only) */
+        .show-guides .zbody {
+            outline: 1px dashed #00a0a0;
+            column-rule: 1px dashed #00a0a0;
+        }
+
+        .show-guides .zmaster {
+            outline: 1px dotted #c0306a;
+            outline-offset: -1px;
+        }
+
+        .show-guides .zstory {
+            background: rgba(0, 160, 160, 0.06);
+        }
+
+        .show-guides .pdf-sheet .zpage {
+            outline: 1px dashed #999;
+            outline-offset: -1px;
+        }
+
+        /* ---- Zine pages (shared by the preview and the PDF) ---- */
         #pdfRenderContainer {
             position: fixed;
             left: -9999px;
@@ -324,6 +572,7 @@
         }
 
         .pdf-sheet {
+            position: relative;
             width: 1056px;
             height: 816px;
             background: white;
@@ -337,36 +586,99 @@
             width: 1056px;
         }
 
-        .pdf-page {
+        .zpage {
+            position: relative;
+            flex: none;
             width: 264px;
             height: 408px;
             padding: 20px;
             overflow: hidden;
-            background: white;
+            background-color: white;
             font-family: 'Courier New', Courier, monospace;
             color: black;
             font-size: 12px;
         }
 
-        .pdf-page.rotated {
+        .zpage.rotated {
             transform: rotate(180deg);
         }
 
-        .pdf-page img {
+        .zpage .zmaster {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .zpage .zbody {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            overflow: hidden;
+            column-gap: 12px;
+            column-fill: auto;
+        }
+
+        .zpage img {
             max-width: 100%;
             height: auto;
         }
 
-        @media print {
-            body { 
-                margin: 0; 
-                padding: 0; 
-            }
-            .pdf-page { 
-                page-break-after: always;
-                width: 11in; 
-                height: 8.5in;
-            }
+        .zpage .auto-image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 10px auto;
+        }
+
+        .zpage .dithered {
+            image-rendering: pixelated;
+        }
+
+        /* Typefaces (GeoPublish-style fonts) */
+        .f-mega { font-family: 'Press Start 2P', 'Courier New', monospace; line-height: 1.4; }
+        .f-pixel { font-family: 'Silkscreen', 'Courier New', monospace; }
+        .f-term { font-family: 'VT323', 'Courier New', monospace; font-size: 1.3em; line-height: 1.1; }
+        .f-serif { font-family: Georgia, 'Times New Roman', serif; }
+        .f-sans { font-family: Helvetica, Arial, sans-serif; }
+
+        /* Graphics tools */
+        .zpage .rule { border: 0; border-top: 2px solid #000; margin: 6px 0; }
+        .zpage .rule-double { border: 0; border-top: 4px double #000; margin: 6px 0; }
+        .zpage .pat-bar { height: 10px; margin: 6px 0; border: 1px solid #000; }
+        .zpage .pat-box { border: 2px solid #000; padding: 4px; margin: 6px 0; }
+        .zpage .pat-box > * { background: #fff; padding: 6px; border: 1px solid #000; }
+        .zpage .pull { border-top: 2px solid #000; border-bottom: 2px solid #000; padding: 6px 0; margin: 8px 0; font-size: 1.2em; font-style: italic; text-align: center; }
+        .zpage .col-break { break-after: column; }
+
+        /* Sheet cut & fold marks */
+        .sheet-marks {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .sheet-marks .mark {
+            position: absolute;
+            background: #000;
+        }
+
+        .sheet-marks .cut-line {
+            position: absolute;
+            top: 408px;
+            left: 264px;
+            width: 528px;
+            border-top: 1px dashed #000;
+        }
+
+        .sheet-marks .scissors {
+            position: absolute;
+            top: 399px;
+            left: 248px;
+            font-size: 13px;
+            line-height: 1;
+            color: #000;
         }
 
         @media (max-width: 1024px) {
@@ -378,6 +690,7 @@
             }
         }
     </style>
+    <style id="patternStyles"></style>
 </head>
 <body>
     <div class="container">
@@ -387,6 +700,9 @@
             <button class="btn" onclick="document.getElementById('loadProjectFile').click()">📂 Load Project</button>
             <button class="btn" onclick="generatePDF()" id="downloadBtn">⬇ Download PDF</button>
             <input type="file" id="loadProjectFile" accept=".zine" style="display: none;" onchange="loadProject(event)">
+            <div class="header-options">
+                <label class="check"><input type="checkbox" id="cutMarks" onchange="setCutMarks(this.checked)"> Print cut &amp; fold marks on the PDF</label>
+            </div>
         </div>
 
         <div class="editor-grid">
@@ -394,16 +710,70 @@
                 <h2>Select Page to Edit</h2>
                 <div class="page-grid" id="pageSelector"></div>
 
-                <h3>Edit Page <span id="currentPageNum">1</span></h3>
+                <h3 id="editHeading">Edit Page 1</h3>
 
-                <div class="form-group">
-                    <label>HTML Content: <span id="charCount" style="color: #888; float: right; font-size: 10px; text-transform: none; letter-spacing: 0;">0 characters</span></label>
-                    <textarea id="pageHTML" oninput="updateCurrentPage()"></textarea>
+                <div class="target-hint" id="targetHint" style="display: none;"></div>
+
+                <div id="pageOptions">
+                    <div class="options-grid">
+                        <div>
+                            <label for="pageColumns">Columns</label>
+                            <select id="pageColumns" onchange="setPageOption('columns', parseInt(this.value))">
+                                <option value="1">1 column</option>
+                                <option value="2">2 columns</option>
+                                <option value="3">3 columns</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="check"><input type="checkbox" id="pageUseMaster" onchange="setPageOption('useMaster', this.checked)"> Use master page</label>
+                            <label class="check" style="margin-top: 8px;"><input type="checkbox" id="pageFlow" onchange="setPageOption('flow', this.checked)"> Flow story onto this page</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toolbox">
+                    <div class="toolbox-title">Tool Box</div>
+                    <div class="tool-row">
+                        <button class="tool" onclick="wrapSelection('<strong>', '</strong>')" title="Bold"><b>B</b></button>
+                        <button class="tool" onclick="wrapSelection('<em>', '</em>')" title="Italic"><i>I</i></button>
+                        <button class="tool" onclick="wrapSelection('<u>', '</u>')" title="Underline"><u>U</u></button>
+                        <select class="tool-select" id="fontPicker" onchange="applyFont(this)" title="Wrap the selected text in a font">
+                            <option value="">Font…</option>
+                            <option value="f-mega">Mega (pixel headline)</option>
+                            <option value="f-pixel">Pixel</option>
+                            <option value="f-term">Terminal</option>
+                            <option value="f-serif">Serif</option>
+                            <option value="f-sans">Sans</option>
+                        </select>
+                    </div>
+                    <div class="tool-row">
+                        <button class="tool" onclick="insertSnippet('headline')">Headline</button>
+                        <button class="tool" onclick="insertSnippet('subhead')">Subhead</button>
+                        <button class="tool" onclick="insertSnippet('rule')">Rule</button>
+                        <button class="tool" onclick="insertSnippet('double')">Double Rule</button>
+                        <button class="tool" onclick="insertSnippet('pull')">Pull Quote</button>
+                        <button class="tool" onclick="insertSnippet('colbreak')">Column Break</button>
+                        <button class="tool" onclick="insertSnippet('pagenum')">Page #</button>
+                    </div>
+                    <div class="tool-row" id="patternPalette"></div>
+                    <div class="tool-row">
+                        <button class="tool" onclick="insertSnippet('bar')">Pattern Bar</button>
+                        <button class="tool" onclick="insertSnippet('box')">Pattern Box</button>
+                        <button class="tool page-only" onclick="setPageOption('bg', selectedPattern)">Fill Page Background</button>
+                        <button class="tool page-only" onclick="setPageOption('bg', 0)">Clear Background</button>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Custom CSS for This Page:</label>
-                    <textarea id="pageCSS" oninput="updateCurrentPage()" placeholder="/* Style the auto-inserted image */
+                    <label>HTML Content: <span id="charCount" style="color: #888; float: right; font-size: 10px; text-transform: none; letter-spacing: 0;">0 characters</span></label>
+                    <textarea id="pageHTML" oninput="onEditorInput()"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Custom CSS for <span id="cssScopeLabel">This Page</span>:</label>
+                    <textarea id="pageCSS" oninput="onEditorInput()" placeholder="/* Only affects this page. */
+
+/* Style the auto-inserted image */
 .auto-image {
   max-width: 50%;
   float: left;
@@ -422,42 +792,78 @@ h1 {
 }"></textarea>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="imageGroup">
                     <label>Image:</label>
                     <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageUpload').click()">
                         <div id="imagePreview"></div>
                         <p id="uploadPrompt">Click to upload image</p>
                     </div>
                     <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
-                    <button class="btn btn-small btn-danger" id="removeImageBtn" onclick="removeImage()" style="display: none;">Remove Image</button>
+                    <div class="image-opts">
+                        <div>
+                            <label for="imageMode">Print as</label>
+                            <select id="imageMode" onchange="setImageOption('imageMode', this.value)">
+                                <option value="none">Original</option>
+                                <option value="atkinson">1-bit · Atkinson dither</option>
+                                <option value="floyd">1-bit · Floyd–Steinberg</option>
+                                <option value="threshold">1-bit · High contrast</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="dotSize">Dot size</label>
+                            <select id="dotSize" onchange="setImageOption('dotSize', parseInt(this.value))">
+                                <option value="1">Fine</option>
+                                <option value="2">Medium</option>
+                                <option value="4">Chunky</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="hint">1-bit images photocopy cleanly — like a GeoPublish photo scrap.</p>
+                    <button class="btn btn-small btn-danger" id="removeImageBtn" onclick="removeImage()" style="display: none; margin-top: 10px;">Remove Image</button>
                 </div>
             </div>
 
             <div class="panel">
-                <h2>Live Preview</h2>
-                <div class="live-preview-container" id="previewContainer">
-                    <div id="livePreview" class="live-preview"></div>
+                <h2>Preview</h2>
+                <div class="view-tabs">
+                    <button class="view-tab" data-view="page" onclick="setView('page')">Page</button>
+                    <button class="view-tab" data-view="all" onclick="setView('all')">All Pages</button>
+                    <button class="view-tab" data-view="sheet" onclick="setView('sheet')">Print Sheet</button>
+                    <label class="check"><input type="checkbox" id="showGuides" onchange="setGuides(this.checked)"> Guides</label>
                 </div>
-                <div class="overflow-warning" id="overflowWarning">
-                    ⚠️ WARNING: Content is too long and will be cut off in the PDF! ⚠️
-                </div>
-                </div>
+                <div id="previewStage" class="preview-stage"></div>
+                <div class="preview-label" id="previewLabel"></div>
+                <div class="flow-info" id="flowInfo"></div>
+                <div class="overflow-warning" id="overflowWarning"></div>
+            </div>
         </div>
     </div>
 
     <div id="pdfRenderContainer">
         <div class="pdf-sheet" id="pdfSheet">
             <div class="pdf-row">
-                <div class="pdf-page rotated" data-page="5"></div>
-                <div class="pdf-page rotated" data-page="4"></div>
-                <div class="pdf-page rotated" data-page="3"></div>
-                <div class="pdf-page rotated" data-page="2"></div>
+                <div class="zpage rotated" data-page="5"></div>
+                <div class="zpage rotated" data-page="4"></div>
+                <div class="zpage rotated" data-page="3"></div>
+                <div class="zpage rotated" data-page="2"></div>
             </div>
             <div class="pdf-row">
-                <div class="pdf-page" data-page="6"></div>
-                <div class="pdf-page" data-page="7"></div>
-                <div class="pdf-page" data-page="8"></div>
-                <div class="pdf-page" data-page="1"></div>
+                <div class="zpage" data-page="6"></div>
+                <div class="zpage" data-page="7"></div>
+                <div class="zpage" data-page="8"></div>
+                <div class="zpage" data-page="1"></div>
+            </div>
+            <div class="sheet-marks" id="sheetMarks" style="display: none;">
+                <div class="mark" style="left: 264px; top: 0; width: 1px; height: 12px;"></div>
+                <div class="mark" style="left: 528px; top: 0; width: 1px; height: 12px;"></div>
+                <div class="mark" style="left: 792px; top: 0; width: 1px; height: 12px;"></div>
+                <div class="mark" style="left: 264px; bottom: 0; width: 1px; height: 12px;"></div>
+                <div class="mark" style="left: 528px; bottom: 0; width: 1px; height: 12px;"></div>
+                <div class="mark" style="left: 792px; bottom: 0; width: 1px; height: 12px;"></div>
+                <div class="mark" style="left: 0; top: 408px; width: 12px; height: 1px;"></div>
+                <div class="mark" style="right: 0; top: 408px; width: 12px; height: 1px;"></div>
+                <div class="cut-line"></div>
+                <div class="scissors">✂</div>
             </div>
         </div>
     </div>
@@ -465,126 +871,302 @@ h1 {
     <script>
         const jsPDF = window.jspdf.jsPDF;
 
+        const PAGE_W = 264;
+        const PAGE_H = 408;
+        const PAGE_NUMS = [1, 2, 3, 4, 5, 6, 7, 8];
+
+        // 8x8 fill patterns in the style of GEOS (one byte per row, MSB = left pixel)
+        const PATTERNS = [
+            null,
+            [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF], // solid
+            [0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55], // 50% checker
+            [0x88, 0x22, 0x88, 0x22, 0x88, 0x22, 0x88, 0x22], // 25%
+            [0x88, 0x00, 0x22, 0x00, 0x88, 0x00, 0x22, 0x00], // 12%
+            [0x77, 0xDD, 0x77, 0xDD, 0x77, 0xDD, 0x77, 0xDD], // 75%
+            [0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0x00], // horizontal lines
+            [0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA], // vertical lines
+            [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80], // diagonal /
+            [0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01], // diagonal \
+            [0x03, 0x06, 0x0C, 0x18, 0x30, 0x60, 0xC0, 0x81], // thick diagonal
+            [0xFF, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80], // grid
+            [0xFF, 0x80, 0x80, 0x80, 0xFF, 0x08, 0x08, 0x08], // bricks
+            [0x18, 0x24, 0x42, 0x81, 0x81, 0x42, 0x24, 0x18], // diamonds
+            [0xF0, 0xF0, 0xF0, 0xF0, 0x0F, 0x0F, 0x0F, 0x0F], // big checker
+            [0x80, 0x00, 0x08, 0x00, 0x80, 0x00, 0x08, 0x00], // sparse dots
+            [0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0x81]  // crosshatch
+        ];
+
+        const BLOCK_TAGS = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'DIV', 'BLOCKQUOTE', 'UL', 'OL', 'PRE', 'HR',
+            'TABLE', 'FIGURE', 'IMG', 'SECTION', 'ARTICLE', 'ASIDE', 'HEADER', 'FOOTER']);
+        const SPLIT_TAGS = new Set(['P', 'BLOCKQUOTE']);
+
+        function defaultPage(n, html) {
+            return {
+                html: html || '',
+                css: '',
+                image: null,
+                imageMode: 'none',
+                dotSize: 2,
+                columns: 1,
+                useMaster: n >= 2 && n <= 7,
+                flow: false,
+                bg: 0
+            };
+        }
+
         const pages = {
-            1: { html: '<h1 style="text-align: center;">MY ZINE TITLE</h1>\n<p style="text-align: center;">By Your Name</p>', css: '', image: null },
-            2: { html: '<h2>Page 2</h2>\n<p>Write your content here with <strong>bold</strong> and <em>italic</em> text!</p>', css: '', image: null },
-            3: { html: '<h2>Page 3</h2>\n<p>Your content here...</p>', css: '', image: null },
-            4: { html: '<h2>Page 4</h2>\n<p>Your content here...</p>', css: '', image: null },
-            5: { html: '<h2>Page 5</h2>\n<p>Your content here...</p>', css: '', image: null },
-            6: { html: '<h2>Page 6</h2>\n<p>Your content here...</p>', css: '', image: null },
-            7: { html: '<h2>Page 7</h2>\n<p>Your content here...</p>', css: '', image: null },
-            8: { html: '<h2 style="text-align: center;">THE END</h2>', css: '', image: null }
+            1: defaultPage(1, '<h1 style="text-align: center;">MY ZINE TITLE</h1>\n<p style="text-align: center;">By Your Name</p>'),
+            2: defaultPage(2, '<h2>Page 2</h2>\n<p>Write your content here with <strong>bold</strong> and <em>italic</em> text!</p>'),
+            3: defaultPage(3, '<h2>Page 3</h2>\n<p>Your content here...</p>'),
+            4: defaultPage(4, '<h2>Page 4</h2>\n<p>Your content here...</p>'),
+            5: defaultPage(5, '<h2>Page 5</h2>\n<p>Your content here...</p>'),
+            6: defaultPage(6, '<h2>Page 6</h2>\n<p>Your content here...</p>'),
+            7: defaultPage(7, '<h2>Page 7</h2>\n<p>Your content here...</p>'),
+            8: defaultPage(8, '<h2 style="text-align: center;">THE END</h2>')
         };
 
-        let currentPage = 1;
+        const DEFAULT_MASTER = {
+            html: '<div class="folio">— {page} —</div>',
+            css: '.folio {\n  position: absolute;\n  bottom: 6px;\n  left: 0;\n  right: 0;\n  text-align: center;\n  font-size: 9px;\n}'
+        };
+
+        let master = { ...DEFAULT_MASTER };
+        let story = { html: '', css: '' };
+        const settings = { cutMarks: false };
+
+        // Processed (dithered) images, keyed by page number. Rebuilt from the originals, never saved.
+        let processed = {};
+        const processToken = {};
+
+        let target = 1;          // 1-8, 'master' or 'story'
+        let lastPage = 1;        // last numbered page edited
+        let view = 'page';
+        let showGuides = false;
+        let selectedPattern = 2;
+        let layoutInfo = { overflow: {}, storyLeft: 0, storyTotal: 0, flowPages: [], storyPages: [] };
+
+        const sheet = document.getElementById('pdfSheet');
+        const htmlInput = document.getElementById('pageHTML');
+        const cssInput = document.getElementById('pageCSS');
+
+        // ------------------------------------------------------------------
+        // Page selector
+        // ------------------------------------------------------------------
+
+        function makeTargetButton(t, text, extraClass) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn' + (extraClass ? ' ' + extraClass : '');
+            btn.textContent = text;
+            btn.dataset.target = t;
+            btn.onclick = () => selectTarget(t);
+            return btn;
+        }
 
         function initPageSelector() {
             const selector = document.getElementById('pageSelector');
-            
-            const coverRow = document.createElement('div');
-            coverRow.className = 'page-row single';
-            const coverBtn = document.createElement('button');
-            coverBtn.className = 'page-btn active';
-            coverBtn.textContent = 'Cover (Page 1)';
-            coverBtn.onclick = () => selectPage(1);
-            coverRow.appendChild(coverBtn);
-            selector.appendChild(coverRow);
-            
-            const row23 = document.createElement('div');
-            row23.className = 'page-row';
-            for (let i = 2; i <= 3; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'page-btn';
-                btn.textContent = 'Page ' + i;
-                btn.onclick = () => selectPage(i);
-                row23.appendChild(btn);
-            }
-            selector.appendChild(row23);
-            
-            const row45 = document.createElement('div');
-            row45.className = 'page-row';
-            for (let i = 4; i <= 5; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'page-btn';
-                btn.textContent = 'Page ' + i;
-                btn.onclick = () => selectPage(i);
-                row45.appendChild(btn);
-            }
-            selector.appendChild(row45);
-            
-            const row67 = document.createElement('div');
-            row67.className = 'page-row';
-            for (let i = 6; i <= 7; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'page-btn';
-                btn.textContent = 'Page ' + i;
-                btn.onclick = () => selectPage(i);
-                row67.appendChild(btn);
-            }
-            selector.appendChild(row67);
-            
-            const backRow = document.createElement('div');
-            backRow.className = 'page-row single';
-            const backBtn = document.createElement('button');
-            backBtn.className = 'page-btn';
-            backBtn.textContent = 'Back (Page 8)';
-            backBtn.onclick = () => selectPage(8);
-            backRow.appendChild(backBtn);
-            selector.appendChild(backRow);
+            const rows = [
+                [[1, 'Cover (Page 1)']],
+                [[2, 'Page 2'], [3, 'Page 3']],
+                [[4, 'Page 4'], [5, 'Page 5']],
+                [[6, 'Page 6'], [7, 'Page 7']],
+                [[8, 'Back (Page 8)']]
+            ];
+            rows.forEach(row => {
+                const div = document.createElement('div');
+                div.className = 'page-row' + (row.length === 1 ? ' single' : '');
+                row.forEach(([t, text]) => div.appendChild(makeTargetButton(t, text)));
+                selector.appendChild(div);
+            });
+
+            const special = document.createElement('div');
+            special.className = 'page-row';
+            special.appendChild(makeTargetButton('master', '▤ Master Page', 'special'));
+            special.appendChild(makeTargetButton('story', '¶ Story (flowing text)', 'special'));
+            selector.appendChild(special);
         }
 
-        function selectPage(pageNum) {
-            currentPage = pageNum;
-            
+        function currentObj() {
+            if (target === 'master') return master;
+            if (target === 'story') return story;
+            return pages[target];
+        }
+
+        function selectTarget(t) {
+            target = t;
+            if (typeof t === 'number') lastPage = t;
+
             document.querySelectorAll('.page-btn').forEach(btn => {
-                btn.classList.remove('active');
+                btn.classList.toggle('active', btn.dataset.target === String(t));
             });
-            
-            const buttons = document.querySelectorAll('.page-btn');
-            const pageOrder = [1, 2, 3, 4, 5, 6, 7, 8];
-            const buttonIndex = pageOrder.indexOf(pageNum);
-            if (buttonIndex !== -1 && buttons[buttonIndex]) {
-                buttons[buttonIndex].classList.add('active');
+
+            const obj = currentObj();
+            htmlInput.value = obj.html;
+            cssInput.value = obj.css || '';
+
+            const isPage = typeof t === 'number';
+            const heading = document.getElementById('editHeading');
+            const hint = document.getElementById('targetHint');
+            if (t === 'master') {
+                heading.textContent = 'Edit Master Page';
+                document.getElementById('cssScopeLabel').textContent = 'the Master Page';
+                hint.innerHTML = 'The master page is drawn behind every page with <b>Use master page</b> ticked — ' +
+                    'great for page numbers, running headers and borders. <code>{page}</code> becomes the page number. ' +
+                    'Position things with <code>position: absolute</code>; the box covers the whole page including margins.';
+            } else if (t === 'story') {
+                heading.textContent = 'Edit Story';
+                document.getElementById('cssScopeLabel').textContent = 'the Story';
+                hint.innerHTML = 'Write or paste a long piece here. It pours into every page with <b>Flow story onto this page</b> ' +
+                    'ticked, in page order, after that page\'s own content — and continues on the next page when one fills up. ' +
+                    'Plain text works too: blank lines become paragraphs.';
+            } else {
+                heading.textContent = 'Edit Page ' + t;
+                document.getElementById('cssScopeLabel').textContent = 'This Page';
             }
+            hint.style.display = isPage ? 'none' : 'block';
+            document.getElementById('pageOptions').style.display = isPage ? 'block' : 'none';
+            document.getElementById('imageGroup').style.display = isPage ? 'block' : 'none';
+            document.querySelectorAll('.page-only').forEach(b => b.disabled = !isPage);
+            htmlInput.style.minHeight = t === 'story' ? '400px' : '';
 
-            const page = pages[pageNum];
-            document.getElementById('pageHTML').value = page.html;
-            document.getElementById('pageCSS').value = page.css || '';
-            document.getElementById('currentPageNum').textContent = pageNum;
-            document.getElementById('previewPageNum').textContent = pageNum;
+            if (t === 'story' && view === 'page') view = 'all';
 
+            syncPageOptions();
             updateCharCount();
             updateImagePreview();
-            updateLivePreview();
+            refresh();
+        }
+
+        function syncPageOptions() {
+            if (typeof target !== 'number') return;
+            const p = pages[target];
+            document.getElementById('pageColumns').value = String(p.columns);
+            document.getElementById('pageUseMaster').checked = p.useMaster;
+            document.getElementById('pageFlow').checked = p.flow;
+            document.getElementById('imageMode').value = p.imageMode;
+            document.getElementById('dotSize').value = String(p.dotSize);
+        }
+
+        function setPageOption(key, value) {
+            if (typeof target !== 'number') return;
+            pages[target][key] = value;
+            refresh();
+        }
+
+        // ------------------------------------------------------------------
+        // Editor
+        // ------------------------------------------------------------------
+
+        let refreshTimer = null;
+        let lateImageRelayouts = 0;
+
+        function onEditorInput() {
+            const obj = currentObj();
+            obj.html = htmlInput.value;
+            obj.css = cssInput.value;
+            lateImageRelayouts = 0;
+            updateCharCount();
+            scheduleRefresh();
+        }
+
+        function scheduleRefresh() {
+            clearTimeout(refreshTimer);
+            refreshTimer = setTimeout(refresh, 120);
         }
 
         function updateCharCount() {
-            const page = pages[currentPage];
-            const charCount = page.html.length;
+            const charCount = currentObj().html.length;
             const charCountElement = document.getElementById('charCount');
             charCountElement.textContent = charCount + ' characters';
-            
-            if (charCount > 1200) {
-                charCountElement.style.color = '#ff0000';
-                charCountElement.style.fontWeight = 'bold';
-            } else if (charCount > 900) {
-                charCountElement.style.color = '#ff8800';
-                charCountElement.style.fontWeight = 'bold';
-            } else {
-                charCountElement.style.color = '#888';
-                charCountElement.style.fontWeight = 'normal';
+            charCountElement.style.color = '#888';
+            charCountElement.style.fontWeight = 'normal';
+        }
+
+        function replaceSelection(text) {
+            htmlInput.focus();
+            // execCommand keeps the textarea's native undo history intact
+            if (!document.execCommand || !document.execCommand('insertText', false, text)) {
+                htmlInput.setRangeText(text, htmlInput.selectionStart, htmlInput.selectionEnd, 'end');
+                onEditorInput();
             }
         }
 
+        function wrapSelection(before, after) {
+            const sel = htmlInput.value.substring(htmlInput.selectionStart, htmlInput.selectionEnd) || 'text';
+            replaceSelection(before + sel + after);
+        }
+
+        function applyFont(select) {
+            if (select.value) wrapSelection('<span class="' + select.value + '">', '</span>');
+            select.value = '';
+        }
+
+        function insertSnippet(kind) {
+            const pat = 'pat-' + selectedPattern;
+            const snippets = {
+                headline: '<h1 class="f-mega" style="font-size: 16px; text-align: center; margin-bottom: 8px;">HEADLINE</h1>\n',
+                subhead: '<h3 class="f-pixel" style="margin: 6px 0;">Subhead</h3>\n',
+                rule: '<hr class="rule">\n',
+                double: '<hr class="rule-double">\n',
+                pull: '<blockquote class="pull">“A quote worth pulling.”</blockquote>\n',
+                colbreak: '<div class="col-break"></div>\n',
+                pagenum: '{page}',
+                bar: '<div class="pat-bar ' + pat + '"></div>\n',
+                box: '<div class="pat-box ' + pat + '"><div>Boxed text goes here.</div></div>\n'
+            };
+            replaceSelection(snippets[kind]);
+        }
+
+        // ------------------------------------------------------------------
+        // Fill patterns
+        // ------------------------------------------------------------------
+
+        function initPatterns() {
+            // Render each pixel as a 6x6 block so the pattern stays crisp at the 6x PDF render scale
+            const px = 6;
+            let css = '';
+            PATTERNS.forEach((rows, i) => {
+                if (!rows) return;
+                const c = document.createElement('canvas');
+                c.width = c.height = 8 * px;
+                const ctx = c.getContext('2d');
+                ctx.fillStyle = '#000';
+                rows.forEach((byte, y) => {
+                    for (let x = 0; x < 8; x++) {
+                        if (byte & (0x80 >> x)) ctx.fillRect(x * px, y * px, px, px);
+                    }
+                });
+                css += '.pat-' + i + ' { background-image: url(' + c.toDataURL() + '); background-size: 8px 8px; }\n';
+            });
+            document.getElementById('patternStyles').textContent = css;
+
+            const palette = document.getElementById('patternPalette');
+            PATTERNS.forEach((rows, i) => {
+                if (!rows) return;
+                const sw = document.createElement('button');
+                sw.className = 'swatch pat-' + i + (i === selectedPattern ? ' selected' : '');
+                sw.title = 'Pattern ' + i;
+                sw.onclick = () => {
+                    selectedPattern = i;
+                    palette.querySelectorAll('.swatch').forEach(s => s.classList.toggle('selected', s === sw));
+                };
+                palette.appendChild(sw);
+            });
+        }
+
+        // ------------------------------------------------------------------
+        // Images (with 1-bit dithering)
+        // ------------------------------------------------------------------
+
         function updateImagePreview() {
-            const page = pages[currentPage];
             const imagePreview = document.getElementById('imagePreview');
             const uploadPrompt = document.getElementById('uploadPrompt');
             const removeBtn = document.getElementById('removeImageBtn');
             const uploadArea = document.getElementById('imageUploadArea');
+            const page = typeof target === 'number' ? pages[target] : null;
 
-            if (page.image) {
-                imagePreview.innerHTML = '<img src="' + page.image + '" class="image-thumbnail" alt="Preview">';
+            if (page && page.image) {
+                const src = processed[target] || page.image;
+                imagePreview.innerHTML = '<img src="' + src + '" class="image-thumbnail" alt="Preview">';
                 uploadPrompt.style.display = 'none';
                 removeBtn.style.display = 'inline-block';
                 uploadArea.classList.add('has-image');
@@ -599,160 +1181,539 @@ h1 {
 
         function handleImageUpload(event) {
             const file = event.target.files[0];
-            if (file) {
+            const pageNum = target;
+            if (file && typeof pageNum === 'number') {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    pages[currentPage].image = e.target.result;
-                    updateImagePreview();
-                    updateLivePreview();
+                reader.onload = async function(e) {
+                    pages[pageNum].image = e.target.result;
+                    delete processed[pageNum];
+                    await processImageFor(pageNum);
+                    if (target === pageNum) updateImagePreview();
+                    refresh();
                 };
                 reader.readAsDataURL(file);
             }
+            event.target.value = '';
         }
 
         function removeImage() {
-            pages[currentPage].image = null;
-            document.getElementById('imageUpload').value = '';
+            pages[target].image = null;
+            delete processed[target];
             updateImagePreview();
-            updateLivePreview();
+            refresh();
         }
 
-        function updateCurrentPage() {
-            pages[currentPage].html = document.getElementById('pageHTML').value;
-            pages[currentPage].css = document.getElementById('pageCSS').value;
-            
-            updateCharCount();
-            updateLivePreview();
-            updatePDFPages();
+        async function setImageOption(key, value) {
+            const pageNum = target;
+            pages[pageNum][key] = value;
+            await processImageFor(pageNum);
+            if (target === pageNum) updateImagePreview();
+            refresh();
         }
 
-        function updateLivePreview() {
-            const preview = document.getElementById('livePreview');
-            const page = pages[currentPage];
-            
-            // Remove old custom style tag
-            const oldStyle = document.getElementById('page-custom-style');
-            if (oldStyle) {
-                oldStyle.remove();
-            }
-            
-            // Add new custom CSS if present
-            if (page.css && page.css.trim() !== '') {
-                const style = document.createElement('style');
-                style.id = 'page-custom-style';
-                style.textContent = page.css;
-                document.head.appendChild(style);
-            }
-            
-            // Clear preview
-            preview.innerHTML = '';
-            
-            // Create content wrapper
-            const contentDiv = document.createElement('div');
-            contentDiv.innerHTML = page.html;
-            
-            // Auto-display image at top if it exists (can be hidden/styled with CSS)
-            if (page.image) {
-                const img = document.createElement('img');
-                img.src = page.image;
-                img.className = 'auto-image';
-                img.style.display = 'block';
-                img.style.maxWidth = '100%';
-                img.style.height = 'auto';
-                img.style.margin = '0 auto 10px auto';
-                
-                preview.appendChild(img);
-            }
-            
-            preview.appendChild(contentDiv);
-            
-            // Check for overflow after content is rendered
-            setTimeout(checkOverflow, 100);
-        }
-
-        function checkOverflow() {
-            const preview = document.getElementById('livePreview');
-            const container = document.getElementById('previewContainer');
-            const warning = document.getElementById('overflowWarning');
-            
-            // Check if content is overflowing
-            const isOverflowing = preview.scrollHeight > preview.clientHeight;
-            
-            if (isOverflowing) {
-                container.classList.add('overflowing');
-                warning.classList.add('visible');
-            } else {
-                container.classList.remove('overflowing');
-                warning.classList.remove('visible');
-            }
-        }
-
-        function updatePDFPages() {
-            // Clear any existing custom style tags in PDF pages
-            document.querySelectorAll('.pdf-page style').forEach(style => style.remove());
-            
-            // Update hidden PDF render
-            document.querySelectorAll('.pdf-page').forEach(elem => {
-                const pageNum = parseInt(elem.getAttribute('data-page'));
-                const page = pages[pageNum];
-                
-                // Clear existing content
-                elem.innerHTML = '';
-                
-                // Apply custom CSS via style tag inside the page
-                if (page.css && page.css.trim() !== '') {
-                    const style = document.createElement('style');
-                    style.textContent = page.css;
-                    elem.appendChild(style);
-                }
-                
-                // Create content wrapper
-                const contentDiv = document.createElement('div');
-                contentDiv.innerHTML = page.html;
-                
-                // Auto-display image at top if it exists (can be hidden/styled with CSS)
-                if (page.image) {
-                    const img = document.createElement('img');
-                    img.src = page.image;
-                    img.className = 'auto-image';
-                    img.style.display = 'block';
-                    img.style.maxWidth = '100%';
-                    img.style.height = 'auto';
-                    img.style.margin = '0 auto 10px auto';
-                    
-                    elem.appendChild(img);
-                }
-                
-                elem.appendChild(contentDiv);
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
             });
         }
+
+        async function processImageFor(pageNum) {
+            const p = pages[pageNum];
+            const token = processToken[pageNum] = (processToken[pageNum] || 0) + 1;
+            if (!p.image || p.imageMode === 'none') {
+                delete processed[pageNum];
+                return;
+            }
+            try {
+                const result = await ditherImage(p.image, p.imageMode, p.dotSize);
+                if (processToken[pageNum] === token) processed[pageNum] = result;
+            } catch (error) {
+                console.error('Error processing image:', error);
+            }
+        }
+
+        // Converts an image to pure black & white. The result is sized for the 6x PDF render
+        // (224px content width * 6) and upscaled with nearest-neighbour so the dots stay sharp.
+        async function ditherImage(src, mode, dot) {
+            const img = await loadImage(src);
+            const w = Math.round(1344 / dot);
+            const h = Math.max(1, Math.round(img.naturalHeight * w / img.naturalWidth));
+
+            const c = document.createElement('canvas');
+            c.width = w;
+            c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            const data = ctx.getImageData(0, 0, w, h);
+            const px = data.data;
+
+            const g = new Float32Array(w * h);
+            for (let i = 0; i < w * h; i++) {
+                g[i] = 0.299 * px[i * 4] + 0.587 * px[i * 4 + 1] + 0.114 * px[i * 4 + 2];
+            }
+
+            const spread = (x, y, err) => {
+                if (x >= 0 && x < w && y < h) g[y * w + x] += err;
+            };
+
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = y * w + x;
+                    const old = g[i];
+                    const val = old < 128 ? 0 : 255;
+                    g[i] = val;
+                    const err = old - val;
+                    if (mode === 'floyd') {
+                        spread(x + 1, y, err * 7 / 16);
+                        spread(x - 1, y + 1, err * 3 / 16);
+                        spread(x, y + 1, err * 5 / 16);
+                        spread(x + 1, y + 1, err * 1 / 16);
+                    } else if (mode === 'atkinson') {
+                        const e = err / 8;
+                        spread(x + 1, y, e);
+                        spread(x + 2, y, e);
+                        spread(x - 1, y + 1, e);
+                        spread(x, y + 1, e);
+                        spread(x + 1, y + 1, e);
+                        spread(x, y + 2, e);
+                    }
+                }
+            }
+
+            for (let i = 0; i < w * h; i++) {
+                px[i * 4] = px[i * 4 + 1] = px[i * 4 + 2] = g[i];
+                px[i * 4 + 3] = 255;
+            }
+            ctx.putImageData(data, 0, 0);
+
+            const out = document.createElement('canvas');
+            out.width = w * dot;
+            out.height = h * dot;
+            const octx = out.getContext('2d');
+            octx.imageSmoothingEnabled = false;
+            octx.drawImage(c, 0, 0, out.width, out.height);
+            return out.toDataURL('image/png');
+        }
+
+        // ------------------------------------------------------------------
+        // Layout: builds all 8 pages in the hidden PDF sheet, flowing the story
+        // ------------------------------------------------------------------
+
+        function applyUserStyles() {
+            const scopes = [['master', '.zpage .zmaster', master.css], ['story', '.zpage .zstory', story.css]];
+            PAGE_NUMS.forEach(n => scopes.push(['page-' + n, '.zpage[data-zpage="' + n + '"]', pages[n].css]));
+            // Each page's CSS is nested under its own selector so it can't leak onto other pages or the editor
+            scopes.forEach(([key, selector, css]) => {
+                let el = document.getElementById('user-style-' + key);
+                if (!el) {
+                    el = document.createElement('style');
+                    el.id = 'user-style-' + key;
+                    document.head.appendChild(el);
+                }
+                el.textContent = css && css.trim() ? selector + ' {\n' + css + '\n}' : '';
+            });
+        }
+
+        function fillTokens(html, n) {
+            return html.replace(/\{page\}/g, n).replace(/\{pages\}/g, PAGE_NUMS.length);
+        }
+
+        function overflows(body) {
+            return body.scrollHeight > body.clientHeight + 1 || body.scrollWidth > body.clientWidth + 1;
+        }
+
+        function buildPage(el, n) {
+            const p = pages[n];
+            el.innerHTML = '';
+            el.dataset.zpage = n;
+            [...el.classList].filter(c => c.startsWith('pat-')).forEach(c => el.classList.remove(c));
+            if (p.bg) el.classList.add('pat-' + p.bg);
+
+            if (p.useMaster && master.html.trim()) {
+                const m = document.createElement('div');
+                m.className = 'zmaster';
+                m.innerHTML = fillTokens(master.html, n);
+                el.appendChild(m);
+            }
+
+            const body = document.createElement('div');
+            body.className = 'zbody';
+            if (p.columns > 1) body.style.columnCount = p.columns;
+
+            // Auto-display image at top if it exists (can be hidden/styled with CSS)
+            if (p.image) {
+                const img = document.createElement('img');
+                img.src = processed[n] || p.image;
+                img.className = 'auto-image' + (processed[n] ? ' dithered' : '');
+                body.appendChild(img);
+            }
+
+            const content = document.createElement('div');
+            content.className = 'zcontent';
+            content.innerHTML = fillTokens(p.html, n);
+            body.appendChild(content);
+
+            el.appendChild(body);
+            return body;
+        }
+
+        function escapeHTML(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // Splits the story into top-level blocks that can be poured page by page
+        function parseStory(html) {
+            if (!html.trim()) return [];
+            if (!/<[a-z!\/]/i.test(html)) {
+                html = html.trim().split(/\n\s*\n/)
+                    .map(para => '<p>' + escapeHTML(para.trim()).replace(/\n/g, '<br>') + '</p>')
+                    .join('');
+            }
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            const blocks = [];
+            let inline = null;
+            [...tmp.childNodes].forEach(node => {
+                if (node.nodeType === 1 && BLOCK_TAGS.has(node.tagName)) {
+                    inline = null;
+                    blocks.push(node);
+                } else if (node.nodeType === 3 && !node.data.trim()) {
+                    if (inline) inline.appendChild(node);
+                } else if (node.nodeType === 1 || node.nodeType === 3) {
+                    if (!inline) {
+                        inline = document.createElement('p');
+                        blocks.push(inline);
+                    }
+                    inline.appendChild(node);
+                }
+            });
+            return blocks;
+        }
+
+        function countWords(node) {
+            let count = 0;
+            const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) count += (walker.currentNode.data.match(/\S+/g) || []).length;
+            return count;
+        }
+
+        // Copy of `src` containing only its first `budget` words. Returns [clone, wordsUsed].
+        function cloneHead(src, budget) {
+            if (src.nodeType === 3) {
+                let used = 0, out = '', stopped = false;
+                for (const part of src.data.split(/(\s+)/)) {
+                    if (!part) continue;
+                    if (/^\s/.test(part)) { out += part; continue; }
+                    if (used === budget) { stopped = true; break; }
+                    out += part;
+                    used++;
+                }
+                if (stopped) out = out.replace(/\s+$/, '');
+                return [document.createTextNode(out), used];
+            }
+            if (src.nodeType !== 1) return [null, 0];
+            const clone = src.cloneNode(false);
+            let used = 0;
+            for (const child of src.childNodes) {
+                if (used >= budget) break;
+                const [c, u] = cloneHead(child, budget - used);
+                if (c) clone.appendChild(c);
+                used += u;
+            }
+            return [clone, used];
+        }
+
+        // Copy of `src` with its first `skip` words removed. Returns [clone|null, wordsSkipped].
+        function cloneTail(src, skip) {
+            if (src.nodeType === 3) {
+                let skipped = 0, out = '';
+                for (const part of src.data.split(/(\s+)/)) {
+                    if (!part) continue;
+                    const isSpace = /^\s/.test(part);
+                    if (skipped < skip) {
+                        if (!isSpace) skipped++;
+                        continue;
+                    }
+                    out += part;
+                }
+                if (skip > 0) out = out.replace(/^\s+/, '');
+                return [out ? document.createTextNode(out) : null, skipped];
+            }
+            if (src.nodeType !== 1) return [null, 0];
+            if (skip === 0) return [src.cloneNode(true), 0];
+            if (!src.childNodes.length) return [null, 0];
+            const clone = src.cloneNode(false);
+            let skipped = 0;
+            for (const child of src.childNodes) {
+                const [c, u] = cloneTail(child, skip - skipped);
+                skipped += u;
+                if (c) clone.appendChild(c);
+            }
+            return [clone.childNodes.length ? clone : null, skipped];
+        }
+
+        // Splits a block so its first part fits the space left on the page. Returns {head, tail} or null.
+        function splitToFit(body, storyDiv, node) {
+            const fits = candidate => {
+                storyDiv.appendChild(candidate);
+                const ok = !overflows(body);
+                storyDiv.removeChild(candidate);
+                return ok;
+            };
+
+            if (node.tagName === 'UL' || node.tagName === 'OL') {
+                const items = [...node.children];
+                const headWith = j => {
+                    const h = node.cloneNode(false);
+                    items.slice(0, j).forEach(li => h.appendChild(li.cloneNode(true)));
+                    return h;
+                };
+                let lo = 0, hi = items.length - 1;
+                while (lo < hi) {
+                    const mid = Math.ceil((lo + hi) / 2);
+                    if (fits(headWith(mid))) lo = mid; else hi = mid - 1;
+                }
+                if (lo < 1) return null;
+                const tail = node.cloneNode(false);
+                items.slice(lo).forEach(li => tail.appendChild(li.cloneNode(true)));
+                if (node.tagName === 'OL') tail.setAttribute('start', (parseInt(node.getAttribute('start')) || 1) + lo);
+                return { head: headWith(lo), tail };
+            }
+
+            if (!SPLIT_TAGS.has(node.tagName)) return null;
+            const total = countWords(node);
+            let lo = 0, hi = total - 1;
+            while (lo < hi) {
+                const mid = Math.ceil((lo + hi) / 2);
+                if (fits(cloneHead(node, mid)[0])) lo = mid; else hi = mid - 1;
+            }
+            if (lo < 1) return null;
+            const tail = cloneTail(node, lo)[0];
+            tail.classList.add('zcont');
+            return { head: cloneHead(node, lo)[0], tail };
+        }
+
+        function fillStory(body, storyDiv, queue, pageIsEmpty) {
+            while (queue.length) {
+                const node = queue[0];
+                storyDiv.appendChild(node);
+                if (!overflows(body)) {
+                    queue.shift();
+                    continue;
+                }
+                storyDiv.removeChild(node);
+                const split = splitToFit(body, storyDiv, node);
+                if (split) {
+                    storyDiv.appendChild(split.head);
+                    queue[0] = split.tail;
+                } else if (pageIsEmpty && !storyDiv.childNodes.length) {
+                    // Too big for even an empty page — place it anyway (it gets cropped) so the rest can continue
+                    storyDiv.appendChild(node);
+                    queue.shift();
+                }
+                break;
+            }
+        }
+
+        function onLateImage() {
+            if (lateImageRelayouts < 5) {
+                lateImageRelayouts++;
+                scheduleRefresh();
+            }
+        }
+
+        function layoutAll() {
+            const queue = parseStory(story.html);
+            const info = { overflow: {}, storyTotal: queue.length, storyLeft: 0, flowPages: [], storyPages: [] };
+
+            PAGE_NUMS.forEach(n => {
+                const el = sheet.querySelector('.zpage[data-page="' + n + '"]');
+                const body = buildPage(el, n);
+
+                if (pages[n].flow) {
+                    info.flowPages.push(n);
+                    if (queue.length) {
+                        const storyDiv = document.createElement('div');
+                        storyDiv.className = 'zstory';
+                        body.appendChild(storyDiv);
+                        const pageIsEmpty = !pages[n].image && !pages[n].html.trim();
+                        fillStory(body, storyDiv, queue, pageIsEmpty);
+                        if (storyDiv.childNodes.length) info.storyPages.push(n);
+                        else storyDiv.remove();
+                    }
+                }
+
+                info.overflow[n] = overflows(body);
+
+                el.querySelectorAll('img').forEach(img => {
+                    if (!img.complete) img.addEventListener('load', onLateImage, { once: true });
+                });
+            });
+
+            info.storyLeft = queue.length;
+            layoutInfo = info;
+        }
+
+        // ------------------------------------------------------------------
+        // Preview
+        // ------------------------------------------------------------------
+
+        function setView(v) {
+            view = v;
+            renderPreview();
+        }
+
+        function setGuides(on) {
+            showGuides = on;
+            renderPreview();
+        }
+
+        function setCutMarks(on) {
+            settings.cutMarks = on;
+            document.getElementById('sheetMarks').style.display = on ? 'block' : 'none';
+            renderPreview();
+        }
+
+        function pageFrame(n, scale) {
+            const src = sheet.querySelector('.zpage[data-page="' + n + '"]');
+            const clone = src.cloneNode(true);
+            clone.classList.remove('rotated');
+            clone.style.transform = 'scale(' + scale + ')';
+            const frame = document.createElement('div');
+            frame.className = 'page-frame' + (layoutInfo.overflow[n] ? ' overflowing' : '');
+            frame.style.width = PAGE_W * scale + 'px';
+            frame.style.height = PAGE_H * scale + 'px';
+            frame.appendChild(clone);
+            return frame;
+        }
+
+        function renderPreview() {
+            const stage = document.getElementById('previewStage');
+            const label = document.getElementById('previewLabel');
+            stage.innerHTML = '';
+            stage.classList.toggle('show-guides', showGuides);
+            document.querySelectorAll('.view-tab').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+
+            const width = Math.max(stage.clientWidth, 200);
+
+            if (view === 'page') {
+                const n = typeof target === 'number' ? target : lastPage;
+                const scale = Math.min((width - 8) / PAGE_W, 600 / PAGE_H);
+                stage.appendChild(pageFrame(n, scale));
+                label.textContent = 'Page ' + n + ' · true proportions (2.75" × 4.25" when printed)';
+            } else if (view === 'all') {
+                const grid = document.createElement('div');
+                grid.className = 'thumb-grid';
+                const scale = Math.min((width - 3 * 12 - 32) / 4 / PAGE_W, 0.75);
+                PAGE_NUMS.forEach(n => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'thumb' + (target === n ? ' current' : '');
+                    thumb.appendChild(pageFrame(n, scale));
+                    const caption = document.createElement('div');
+                    caption.textContent = (n === 1 ? 'Cover' : n === 8 ? 'Back' : 'Page ' + n) +
+                        (layoutInfo.storyPages.includes(n) ? ' ↪' : '') + (layoutInfo.overflow[n] ? ' ⚠' : '');
+                    thumb.appendChild(caption);
+                    thumb.onclick = () => selectTarget(n);
+                    grid.appendChild(thumb);
+                });
+                stage.appendChild(grid);
+                label.textContent = 'Reading order · click a page to edit it · ↪ = story flows here';
+            } else {
+                const scale = (width - 8) / 1056;
+                const frame = document.createElement('div');
+                frame.className = 'sheet-frame';
+                frame.style.width = 1056 * scale + 'px';
+                frame.style.height = 816 * scale + 'px';
+                const clone = sheet.cloneNode(true);
+                clone.removeAttribute('id');
+                clone.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
+                clone.style.transform = 'scale(' + scale + ')';
+                clone.querySelectorAll('.zpage').forEach(p => {
+                    p.onclick = () => selectTarget(parseInt(p.dataset.page));
+                });
+                frame.appendChild(clone);
+                stage.appendChild(frame);
+                label.textContent = 'Exactly as printed on one 11" × 8.5" sheet · top row prints upside down so it reads right after folding';
+            }
+        }
+
+        function renderStatus() {
+            const messages = [];
+            PAGE_NUMS.forEach(n => {
+                if (layoutInfo.overflow[n]) messages.push('Page ' + n + ' is too long — the bottom will be cut off in the PDF.');
+            });
+            if (layoutInfo.storyTotal > 0) {
+                if (!layoutInfo.flowPages.length) {
+                    messages.push('The story isn\'t placed anywhere yet — tick "Flow story onto this page" on one or more pages.');
+                } else if (layoutInfo.storyLeft > 0) {
+                    messages.push('The story doesn\'t fit: ' + layoutInfo.storyLeft + ' of ' + layoutInfo.storyTotal +
+                        ' blocks are left over. Flow it onto more pages or trim it.');
+                }
+            }
+
+            const warning = document.getElementById('overflowWarning');
+            if (messages.length) {
+                warning.innerHTML = '⚠️ <ul>' + messages.map(m => '<li>' + m + '</li>').join('') + '</ul>';
+                warning.classList.add('visible');
+            } else {
+                warning.classList.remove('visible');
+            }
+
+            const flowInfo = document.getElementById('flowInfo');
+            flowInfo.textContent = layoutInfo.storyPages.length
+                ? 'Story flows: page ' + layoutInfo.storyPages.join(' → ')
+                : '';
+
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                const n = parseInt(btn.dataset.target);
+                btn.classList.toggle('warn', !!layoutInfo.overflow[n] ||
+                    (btn.dataset.target === 'story' && layoutInfo.storyTotal > 0 && (layoutInfo.storyLeft > 0 || !layoutInfo.flowPages.length)));
+                btn.classList.toggle('flowing', layoutInfo.storyPages.includes(n));
+            });
+        }
+
+        function refresh() {
+            clearTimeout(refreshTimer);
+            applyUserStyles();
+            layoutAll();
+            renderPreview();
+            renderStatus();
+        }
+
+        // ------------------------------------------------------------------
+        // PDF + project files
+        // ------------------------------------------------------------------
 
         async function generatePDF() {
             // Prompt user for filename
             let filename = prompt('Save PDF as:', 'my-zine.pdf');
-            
+
             if (!filename) {
                 return; // User cancelled
             }
-            
+
             // Ensure .pdf extension
             if (!filename.endsWith('.pdf')) {
                 filename += '.pdf';
             }
-            
+
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.disabled = true;
             downloadBtn.textContent = 'Generating...';
 
             try {
-                updatePDFPages();
+                await document.fonts.ready;
+                refresh();
                 await new Promise(resolve => setTimeout(resolve, 300));
 
-                const element = document.getElementById('pdfSheet');
-                
                 // High resolution rendering: scale 6 means 6x pixel density
                 // This produces very crisp, high-quality PDFs
-                const canvas = await html2canvas(element, {
+                const canvas = await html2canvas(sheet, {
                     scale: 6,
                     backgroundColor: '#ffffff',
                     logging: false,
@@ -770,7 +1731,7 @@ h1 {
                 });
 
                 const imgData = canvas.toDataURL('image/png');
-                
+
                 // Add image at full quality with no compression
                 pdf.addImage(imgData, 'PNG', 0, 0, 1056, 816, undefined, 'NONE');
 
@@ -789,30 +1750,33 @@ h1 {
         function saveProject() {
             // Prompt user for filename
             let filename = prompt('Save project as:', 'my-zine-project.zine');
-            
+
             if (!filename) {
                 return; // User cancelled
             }
-            
+
             // Ensure .zine extension
             if (!filename.endsWith('.zine')) {
                 filename += '.zine';
             }
-            
+
             const projectData = {
-                version: '2.0',
+                version: '3.0',
                 pages: pages,
+                master: master,
+                story: story,
+                settings: settings,
                 savedDate: new Date().toISOString()
             };
 
             const dataStr = JSON.stringify(projectData, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
+
             const link = document.createElement('a');
             link.href = URL.createObjectURL(dataBlob);
             link.download = filename;
             link.click();
-            
+
             URL.revokeObjectURL(link.href);
         }
 
@@ -821,39 +1785,50 @@ h1 {
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 try {
                     const projectData = JSON.parse(e.target.result);
-                    
+
                     if (!projectData.pages) {
                         alert('Invalid project file format.');
                         return;
                     }
 
+                    const isV3 = parseFloat(projectData.version) >= 3;
+
                     // Load all pages
                     Object.keys(projectData.pages).forEach(pageNum => {
+                        const n = parseInt(pageNum);
+                        if (!pages[n]) return;
                         const loadedPage = projectData.pages[pageNum];
-                        
+                        // Older projects had no master page; keep them looking exactly as they did
+                        const base = { ...defaultPage(n), useMaster: isV3 ? defaultPage(n).useMaster : false };
+
                         // Handle legacy markdown format (convert to HTML if needed)
                         if (loadedPage.text !== undefined) {
-                            pages[pageNum].html = '<p>' + loadedPage.text.replace(/\n\n/g, '</p>\n<p>') + '</p>';
-                            pages[pageNum].css = loadedPage.customCSS || '';
-                            pages[pageNum].image = loadedPage.image || null;
-                        } else {
-                            // New format
-                            pages[pageNum] = {
-                                html: loadedPage.html || '',
-                                css: loadedPage.css || '',
+                            pages[n] = {
+                                ...base,
+                                html: '<p>' + loadedPage.text.replace(/\n\n/g, '</p>\n<p>') + '</p>',
+                                css: loadedPage.customCSS || '',
                                 image: loadedPage.image || null
                             };
+                        } else {
+                            pages[n] = { ...base, ...loadedPage };
                         }
                     });
 
+                    master = projectData.master || (isV3 ? { html: '', css: '' } : { ...DEFAULT_MASTER });
+                    story = projectData.story || { html: '', css: '' };
+                    const cutMarks = !!(projectData.settings && projectData.settings.cutMarks);
+                    document.getElementById('cutMarks').checked = cutMarks;
+                    setCutMarks(cutMarks);
+
+                    processed = {};
+                    await Promise.all(PAGE_NUMS.map(processImageFor));
+
                     // Refresh the current page view
-                    selectPage(currentPage);
-                    updateLivePreview();
-                    updatePDFPages();
-                    
+                    selectTarget(typeof target === 'number' ? target : 1);
+
                     alert('Project loaded successfully!');
                 } catch (error) {
                     console.error('Error loading project:', error);
@@ -861,15 +1836,23 @@ h1 {
                 }
             };
             reader.readAsText(file);
-            
+
             // Reset file input so the same file can be loaded again
             event.target.value = '';
         }
 
+        window.addEventListener('resize', () => {
+            clearTimeout(window.__resizeTimer);
+            window.__resizeTimer = setTimeout(renderPreview, 100);
+        });
+
+        // Web fonts change text metrics, so re-run the layout once they arrive
+        document.fonts.ready.then(refresh);
+        document.fonts.addEventListener('loadingdone', scheduleRefresh);
+
+        initPatterns();
         initPageSelector();
-        selectPage(1);
-        updateLivePreview();
-        updatePDFPages();
+        selectTarget(1);
     </script>
 </body>
 </html>
